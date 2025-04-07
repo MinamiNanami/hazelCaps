@@ -44,6 +44,7 @@
         width: 60px;
         margin-right: 10px;
         border-radius: 700px;
+        cursor: pointer;
     }
 
     .user-avatar {
@@ -95,9 +96,31 @@
         cursor: pointer;
     }
 
-    .sidebar li:hover {
-        background-color: #f0f7ff;
+
+    /* Styling for subcategories */
+    .subcategories {
+        margin-left: 15px;
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
     }
+
+    .subcategories li {
+        background-color: #f0f7ff;
+        margin: 8px 0;
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .subcategories li:hover {
+        background-color: #d9ebff;
+    }
+
+    /* Active class to show subcategories */
+    .active .subcategories {
+        display: block;
+    }
+
+
 
     .content {
         flex: 1;
@@ -109,13 +132,15 @@
     }
 
     .school-bg {
-        width: 80%;
-        height: 300px;
+        width: 100%;
+        height: 100%;
         background-color: white;
         position: relative;
         border-radius: 15px;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         overflow: hidden;
+        background-image: url('../images/schoolBackground.jpg');
+        background-size: cover;
     }
 
     .school-bg::before {
@@ -130,8 +155,6 @@
     }
 
     .school-logo {
-        width: 120px;
-        height: 120px;
         background-color: white;
         border: 4px solid #4a90e2;
         border-radius: 50%;
@@ -142,13 +165,25 @@
         box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
     }
 
+    .school-logo img {
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+    }
+
+    /* Quarter item styling */
+    .quarter-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
 
 <body>
     <div class="header">
         <div class="header-left">
             <div class="logo">
-                <img src="../images/schoolLogo.jpg" alt="Logo">
+                <img src="../images/schoolLogo.jpg" alt="Logo" onclick="location.href='landing.html'">
                 <span> PINAGBARILAN ELEMENTARY SCHOOL</span>
             </div>
         </div>
@@ -158,21 +193,74 @@
     <main>
         <aside class="sidebar">
 
-            <h2> *Subject</h2>
-            <ul> 
-                <li> 1st Quarter </li>
-                <li> 2nd Quarter </li>
-                <li> 3rd Quarter </li>
-                <li> 4th Quarter </li>
+            <h2> English </h2>
+            <ul class="quarters-list"> 
+                <li class="quarter">
+                    <div class="quarter-item">1st Quarter</div>
+                    <ul class="subcategories">
+                        <li>Exams</li>
+                        <li onclick="location.href='quizzes.html'">Quizzes</li>
+                    </ul>
+                </li>
+                <li class="quarter">
+                    <div class="quarter-item">2nd Quarter</div>
+                    <ul class="subcategories">
+                        <li>Exams</li>
+                        <li>Quizzes</li>
+                    </ul>
+                </li>
+                <li class="quarter">
+                    <div class="quarter-item">3rd Quarter</div>
+                    <ul class="subcategories">
+                        <li>Exams</li>
+                        <li>Quizzes</li>
+                    </ul>
+                </li>
+                <li class="quarter">
+                    <div class="quarter-item">4th Quarter</div>
+                    <ul class="subcategories">
+                        <li>Exams</li>
+                        <li>Quizzes</li>
+                    </ul>
+                </li>
             </ul>
         </aside>
         
         <section class="content">
             <div class="school-bg">
-                <div class="school-logo"></div>
+                <div class="school-logo"> <img src="../images/schoolLogo.jpg"></div>
             </div>
         </section>
     </main>
+
+    <script>
+        // Add event listeners to all quarter items
+        document.querySelectorAll('.quarter').forEach(quarter => {
+            quarter.addEventListener('click', function(e) {
+                // Prevent the click from propagating to parent elements
+                e.stopPropagation();
+                
+                // Toggle active class to show/hide subcategories
+                this.classList.toggle('active');
+                
+                // Close other open quarters
+                document.querySelectorAll('.quarter').forEach(item => {
+                    if (item !== this && item.classList.contains('active')) {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Prevent subcategory clicks from toggling the parent
+        document.querySelectorAll('.subcategories li').forEach(subItem => {
+            subItem.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('Clicked on:', this.textContent);
+                // You can add additional functionality here when a subcategory is clicked
+            });
+        });
+    </script>
 </body>
 
 </html>
