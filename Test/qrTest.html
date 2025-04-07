@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Classroom - Sign Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .signup-title {
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-container,
+    .success-container {
+      padding: 20px 0;
+    }
+
+    .success-container {
+      display: none;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .submit-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .submit-btn:hover {
+      background-color: #45a049;
+    }
+
+    .qr-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    #qrcode {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .qr-canvas {
+      background-color: white;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .status {
+      color: #666;
+      margin-top: 10px;
+      font-style: italic;
+      text-align: center;
+    }
+
+    .error {
+      color: #d32f2f;
+      padding: 10px;
+      border: 1px solid #ffcdd2;
+      background-color: #ffebee;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .account-info {
+      background-color: #e8f5e9;
+      border: 1px solid #c8e6c9;
+      border-radius: 4px;
+      padding: 15px;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .account-info h3 {
+      margin-top: 0;
+      color: #2e7d32;
+    }
+
+    .account-info p {
+      margin: 5px 0;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .action-buttons button {
+      flex: 1;
+    }
+
+    .download-btn {
+      background-color: #2196F3;
+    }
+
+    .download-btn:hover {
+      background-color: #0b7dda;
+    }
+
+    .email-btn {
+      background-color: #ff9800;
+    }
+
+    .email-btn:hover {
+      background-color: #e68a00;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .login-link a {
+      color: #2196F3;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .colorful-footer {
+      display: flex;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .color-block {
+      height: 8px;
+      flex: 1;
+    }
+
+    /* Spinner for loading indication */
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border-left-color: #09f;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* New button for login page redirect */
+    .login-page-btn {
+      background-color: #673AB7;
+      color: white;
+      border: none;
+      padding: 12px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .login-page-btn:hover {
+      background-color: #5E35B1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="signup-title">Join My Classroom</h1>
+
+    <div id="errorMessage" class="error"></div>
+
+    <!-- Account Creation Form -->
+    <div id="accountForm" class="form-container">
+      <div class="form-group">
+        <label for="student">Student's Full Name</label>
+        <input type="text" id="student" placeholder="Student's full name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Student's Email Address</label>
+        <input type="email" id="email" placeholder="Enter your email address" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Create a password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="studentId">Student ID</label>
+        <input type="text" id="studentId" placeholder="2021134523" required>
+      </div>
+
+      <div class="form-group">
+        <label for="grade">Grade Level</label>
+        <select id="grade" required>
+          <option value="" selected disabled>Grade level</option>
+          <option value="4">4th Grade</option>
+          <option value="5">5th Grade</option>
+          <option value="6">6th Grade</option>
+        </select>
+      </div>
+
+      <button id="createAccount" class="submit-btn">Sign Up</button>
+
+      <div class="login-link">
+        Already have an account? <a href="login.html">Log In</a>
+      </div>
+
+      <div class="colorful-footer">
+        <div class="color-block" style="background-color: #4285f4;"></div>
+        <div class="color-block" style="background-color: #34a853;"></div>
+        <div class="color-block" style="background-color: #9c27b0;"></div>
+        <div class="color-block" style="background-color: #ea4335;"></div>
+      </div>
+    </div>
+
+    <!-- Success Screen with QR Code -->
+    <div id="successScreen" class="success-container">
+      <h2>Student Successfully Registered!</h2>
+
+      <div class="account-info">
+        <h3>Student Information</h3>
+        <p><strong>Name:</strong> <span id="displayName"></span></p>
+        <p><strong>Email:</strong> <span id="displayEmail"></span></p>
+        <p><strong>Student ID:</strong> <span id="displayStudentId"></span></p>
+        <p><strong>Grade:</strong> <span id="displayGrade"></span></p>
+      </div>
+
+      <p>Scan this QR code for classroom access:</p>
+
+      <div class="qr-container">
+        <div id="qrcode"></div>
+        <p class="status">This QR code contains secure classroom login information</p>
+      </div>
+
+      <div class="action-buttons">
+        <button id="download" class="download-btn submit-btn">Download QR Code</button>
+        <button id="sendEmail" class="email-btn submit-btn">Email Information</button>
+      </div>
+
+      <!-- New login page redirect button -->
+      <button id="goToLogin" class="login-page-btn">Continue to Login Page</button>
+
+      <button id="newAccount" class="submit-btn" style="margin-top: 15px;">Register Another Student</button>
+
+      <div class="colorful-footer" style="margin-top: 30px;">
+        <div class="color-block" style="background-color: #4285f4;"></div>
+        <div class="color-block" style="background-color: #34a853;"></div>
+        <div class="color-block" style="background-color: #9c27b0;"></div>
+        <div class="color-block" style="background-color: #ea4335;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Generate QR code data for a student
+    function generateQRData(name, email, studentId, grade) {
+      const data = {
+        name: name,
+        email: email,
+        studentId: studentId,
+        grade: grade,
+        timestamp: new Date().toISOString()
+      };
+
+      return JSON.stringify(data);
+    }
+
+    // Simple QR Code generator (fallback if library fails)
+    function createSimpleQRCode(text, options) {
+      const canvas = document.createElement('canvas');
+      const size = options.width || 200;
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // Fill white background
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, size, size);
+
+      // Draw border
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(10, 10, size - 20, size - 20);
+
+      // Add text message (not a real QR code, just text information)
+      ctx.fillStyle = '#000000';
+      ctx.font = '14px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Student Information:', size / 2, 40);
+
+      // Parse the JSON data
+      try {
+        const data = JSON.parse(text);
+        ctx.font = '12px Arial';
+        ctx.fillText(`Name: ${data.name}`, size / 2, 70);
+        ctx.fillText(`Email: ${data.email}`, size / 2, 90);
+        ctx.fillText(`ID: ${data.studentId}`, size / 2, 110);
+        ctx.fillText(`Grade: ${data.grade}`, size / 2, 130);
+      } catch (e) {
+        // If not JSON, just show the text
+        ctx.fillText(text.substring(0, 30), size / 2, 70);
+        if (text.length > 30) {
+          ctx.fillText(text.substring(30, 60) + '...', size / 2, 90);
+        }
+      }
+
+      return {
+        _element: canvas,
+        clear: function () { },
+        makeCode: function () { }
+      };
+    }
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Get DOM elements
+      const accountForm = document.getElementById('accountForm');
+      const successScreen = document.getElementById('successScreen');
+      const createAccountBtn = document.getElementById('createAccount');
+      const newAccountBtn = document.getElementById('newAccount');
+      const downloadBtn = document.getElementById('download');
+      const sendEmailBtn = document.getElementById('sendEmail');
+      const goToLoginBtn = document.getElementById('goToLogin');
+      const errorMessageDiv = document.getElementById('errorMessage');
+
+      // Form fields
+      const studentNameInput = document.getElementById('student');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirmPassword');
+      const studentIdInput = document.getElementById('studentId');
+      const gradeSelect = document.getElementById('grade');
+
+      // Display fields
+      const displayNameSpan = document.getElementById('displayName');
+      const displayEmailSpan = document.getElementById('displayEmail');
+      const displayStudentIdSpan = document.getElementById('displayStudentId');
+      const displayGradeSpan = document.getElementById('displayGrade');
+      const qrcodeContainer = document.getElementById('qrcode');
+
+      let qrcode = null;
+      let QRCodeLib = null;
+      let usingFallback = false;
+      let registeredStudent = null;
+
+      // Load the QRCode library
+      function loadQRCodeLibrary() {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+          script.onload = () => resolve(window.QRCode);
+          script.onerror = () => {
+            // Try alternate CDN
+            const alternateScript = document.createElement('script');
+            alternateScript.type = 'text/javascript';
+            alternateScript.src = 'https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js';
+            alternateScript.onload = () => resolve(window.QRCode);
+            alternateScript.onerror = () => {
+              console.warn('QR Code library could not be loaded. Using fallback.');
+              usingFallback = true;
+              resolve({ createQRCode: createSimpleQRCode });
+            };
+            document.head.appendChild(alternateScript);
+          };
+          document.head.appendChild(script);
+        });
+      }
+
+      // Show error message
+      function showError(message) {
+        errorMessageDiv.textContent = message;
+        errorMessageDiv.style.display = 'block';
+        setTimeout(() => {
+          errorMessageDiv.style.display = 'none';
+        }, 5000);
+      }
+
+      // Validate form
+      function validateForm() {
+        if (!studentNameInput.value.trim()) {
+          showError('Please enter student\'s full name');
+          return false;
+        }
+
+        if (!emailInput.value.trim() || !emailInput.value.includes('@')) {
+          showError('Please enter a valid email address');
+          return false;
+        }
+
+        if (passwordInput.value.length < 6) {
+          showError('Password must be at least 6 characters long');
+          return false;
+        }
+
+        if (passwordInput.value !== confirmPasswordInput.value) {
+          showError('Passwords do not match');
+          return false;
+        }
+
+        if (!studentIdInput.value.trim()) {
+          showError('Please enter a student ID');
+          return false;
+        }
+
+        if (!gradeSelect.value) {
+          showError('Please select a grade level');
+          return false;
+        }
+
+        return true;
+      }
+
+      // Generate QR code for the student
+      function generateStudentQR(studentData) {
+        const qrText = generateQRData(
+          studentData.name,
+          studentData.email,
+          studentData.studentId,
+          studentData.grade
+        );
+
+        // Clear previous QR code
+        qrcodeContainer.innerHTML = '';
+
+        try {
+          // Create QR code
+          if (usingFallback) {
+            qrcode = createSimpleQRCode(qrText, {
+              width: 200,
+              height: 200
+            });
+            qrcodeContainer.appendChild(qrcode._element);
+            qrcodeContainer.querySelector('canvas').className = 'qr-canvas';
+          } else {
+            qrcode = new QRCodeLib(qrcodeContainer, {
+              text: qrText,
+              width: 200,
+              height: 200,
+              colorDark: "#000000",
+              colorLight: "#ffffff",
+              correctLevel: QRCodeLib.CorrectLevel.H
+            });
+          }
+
+          // Warning message if using fallback
+          if (usingFallback) {
+            showError('Using simplified mode. The displayed image is not a real QR code.');
+          }
+        } catch (e) {
+          console.error('QR generation error:', e);
+          showError('Error generating QR code: ' + e.message);
+          qrcodeContainer.innerHTML = '<p class="error">Failed to generate QR code</p>';
+        }
+      }
+
+      // Store student data in session storage for login page
+      function storeStudentData(studentData) {
+        sessionStorage.setItem('registeredStudent', JSON.stringify(studentData));
+      }
+
+      // Handle student registration
+      async function registerStudent() {
+        if (!validateForm()) {
+          return;
+        }
+
+        try {
+          // In a real app, you would send this data to your server
+          // For demo purposes, we'll just simulate the registration
+
+          // Create student data
+          const studentData = {
+            name: studentNameInput.value.trim(),
+            email: emailInput.value.trim(),
+            password: passwordInput.value, // Would be encrypted in a real app
+            studentId: studentIdInput.value.trim(),
+            grade: gradeSelect.options[gradeSelect.selectedIndex].text
+          };
+
+          // Save student data for login page
+          registeredStudent = studentData;
+          storeStudentData(studentData);
+
+          // Load QR code library if not already loaded
+          if (!QRCodeLib) {
+            QRCodeLib = await loadQRCodeLibrary();
+          }
+
+          // Update display elements
+          displayNameSpan.textContent = studentData.name;
+          displayEmailSpan.textContent = studentData.email;
+          displayStudentIdSpan.textContent = studentData.studentId;
+          displayGradeSpan.textContent = studentData.grade;
+
+          // Generate QR code
+          generateStudentQR(studentData);
+
+          // Hide form, show success screen
+          accountForm.style.display = 'none';
+          successScreen.style.display = 'block';
+
+        } catch (error) {
+          showError('Error registering student: ' + error.message);
+        }
+      }
+
+      // Download QR code
+      function downloadQR() {
+        const canvas = qrcodeContainer.querySelector('canvas');
+        if (!canvas) {
+          showError('No QR code available to download');
+          return;
+        }
+
+        try {
+          const link = document.createElement('a');
+          link.download = `classroom-qr-${displayStudentIdSpan.textContent}.png`;
+          link.href = canvas.toDataURL('image/png');
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } catch (e) {
+          showError('Error downloading QR code: ' + e.message);
+        }
+      }
+
+      // Simulate sending email
+      function sendEmail() {
+        // In a real app, you would call an API to send an email
+        showError('Email feature would be integrated with a server API in a production environment');
+        alert(`In a real application, an email would be sent to ${displayEmailSpan.textContent} with the student details and QR code.`);
+      }
+
+      // Go to login page with pre-filled email
+      function goToLoginPage() {
+        // If we have the student data
+        if (registeredStudent) {
+          // Navigate to login page
+          window.location.href = "loginTest.html";
+        } else {
+          showError('Student data not found. Please try registering again.');
+        }
+      }
+
+      // Reset form for new registration
+      function resetForm() {
+        // Clear form fields
+        studentNameInput.value = '';
+        emailInput.value = '';
+        passwordInput.value = '';
+        confirmPasswordInput.value = '';
+        studentIdInput.value = '';
+        gradeSelect.selectedIndex = 0;
+
+        // Show form, hide success screen
+        successScreen.style.display = 'none';
+        accountForm.style.display = 'block';
+      }
+
+      // Set up event listeners
+      createAccountBtn.addEventListener('click', registerStudent);
+      newAccountBtn.addEventListener('click', resetForm);
+      downloadBtn.addEventListener('click', downloadQR);
+      sendEmailBtn.addEventListener('click', sendEmail);
+      goToLoginBtn.addEventListener('click', goToLoginPage);
+
+      // Load QR code library in advance
+      loadQRCodeLibrary().then(lib => {
+        QRCodeLib = lib;
+      });
+    });
+  </script>
+</body>
+
+</html>

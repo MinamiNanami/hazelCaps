@@ -1,140 +1,148 @@
-* {
+body {
+    font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+    background-color: #f0f7ff;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-body {
-    background-color: #f5f5f5;
-    height: 100vh;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
-.header {
-    background-color: white;
-    padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    font-weight: 600;
-    font-size: 18px;
-    color: #333;
-}
-
-.logo i {
-    margin-right: 10px;
-}
-
-.main-container {
-    flex: 1;
-    background-color: #e4f7fb;
+.avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #f5b400;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
+    font-weight: bold;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
     padding: 20px;
 }
 
-.form-card {
+.signup-card {
     background-color: white;
-    border-radius: 8px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 500px;
     padding: 30px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.form-title {
+.signup-title {
+    color: #4285f4;
     text-align: center;
-    margin-bottom: 25px;
-    font-size: 24px;
-    color: #333;
+    font-size: 28px;
+    margin-bottom: 30px;
 }
 
 .form-group {
     margin-bottom: 20px;
 }
 
-.form-row {
-    display: flex;
-    gap: 8px;
-}
-
-.form-column {
-    flex: 1;
-}
-
-.form-column.small {
-    flex: 0.7;
-}
-
-.form-column.smaller {
-    flex: 0.5;
-}
-
-.form-label {
+.form-group label {
     display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #444;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
 }
 
-.form-input {
+.form-group input,
+.form-group select {
     width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
     font-size: 16px;
+    box-sizing: border-box;
 }
 
-.sign-up-btn {
-    width: 100%;
-    padding: 12px;
-    background-color: #7b7c90;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #4285f4;
+    outline: none;
 }
 
-.footer {
-    padding: 15px;
-    text-align: center;
-    background-color: #f5f5f5;
-}
-
-.footer-links {
+.role-selector {
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
-.footer-link {
-    color: #666;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.footer-link:hover {
-    text-decoration: underline;
-}
-
-.field-label {
+.role-option {
+    flex: 1;
     text-align: center;
-    font-size: 12px;
-    color: #666;
-    margin-top: 5px;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
-.optional-text {
-    font-size: 10px;
-    color: #888;
+.role-option.selected {
+    border-color: #4285f4;
+    background-color: #e8f0fe;
+}
+
+.role-option img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.submit-btn {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #3367d6;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #555;
+}
+
+.login-link a {
+    color: #4285f4;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.colorful-footer {
+    display: flex;
+    width: 100%;
+    height: 10px;
+    margin-top: 40px;
+}
+
+.color-block {
+    flex: 1;
+    height: 100%;
+}
+
+.password-error {
+    color: #ea4335;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
 }

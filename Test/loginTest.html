@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .left-section {
+            flex: 1;
+            background-color: #f3f4f6;
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+
+        .right-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .right-section-inner {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .login-heading {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .login-subheading {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            border-color: #673AB7;
+            outline: none;
+        }
+
+        .password-input-container {
+            position: relative;
+        }
+
+        .password-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: #673AB7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background-color: #673AB7;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: #5E35B1;
+        }
+
+        .create-account {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .create-account a {
+            color: #673AB7;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .create-account a:hover {
+            text-decoration: underline;
+        }
+
+        /* Decoration for left panel */
+        .purple-blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background-color: #673AB7;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            top: 20%;
+            left: 10%;
+            z-index: 1;
+        }
+
+        .white-circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            top: 30%;
+            left: 15%;
+            z-index: 2;
+        }
+
+        .purple-circle {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: #9C27B0;
+            border-radius: 50%;
+            bottom: 25%;
+            right: 15%;
+            z-index: 1;
+        }
+
+        .floating-image {
+            position: absolute;
+            width: 200px;
+            z-index: 3;
+            top: 25%;
+            left: 15%;
+        }
+
+        .floating-image-2 {
+            position: absolute;
+            width: 150px;
+            z-index: 3;
+            bottom: 20%;
+            right: 10%;
+        }
+
+        @media (min-width: 768px) {
+            .left-section {
+                display: block;
+            }
+        }
+
+        /* Success message for QR login */
+        .success-message {
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            border: 1px solid #ffcdd2;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="left-section">
+            <div class="purple-blob"></div>
+            <div class="white-circle"></div>
+            <div class="floating-image">
+                <img src="../images/floating.png" alt="Floating Image">
+            </div>
+            <div class="floating-image-2">
+                <img src="../images/floating.png" alt="Floating Image">
+            </div>
+            <div class="purple-circle"></div>
+        </div>
+
+        <div class="right-section">
+            <div class="right-section-inner">
+                <div class="logo-container">
+                    <span class="logo-icon"><img src="../images/schoolLogo.jpg" width="150px" height="150px" alt="School Logo"></span>
+                </div>
+
+                <h1 class="login-heading">Log In</h1>
+                <p class="login-subheading">Welcome back to My Classroom</p>
+
+                <div id="successMessage" class="success-message">
+                    You've been successfully registered! Please log in with your credentials.
+                </div>
+
+                <div id="errorMessage" class="error-message"></div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="email" class="form-input" placeholder="Enter your school email address">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="password-input-container">
+                            <input type="password" id="password" class="form-input" placeholder="Enter your password">
+                            <span class="password-icon" id="togglePassword">👁️</span>
+                        </div>
+                    </div>
+
+                    <div class="forgot-password">
+                        <a href="#">Forgot password?</a>
+                    </div>
+
+                    <button type="button" id="loginButton" class="login-button">Log in</button>
+
+                    <div class="create-account">
+                        Don't have an account? <a href="signup.html">Sign up</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+            const loginButton = document.getElementById('loginButton');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Check for registered student from the signup page
+            const registeredStudent = JSON.parse(sessionStorage.getItem('registeredStudent'));
+            
+            // If coming from registration, show success message and pre-fill email
+            if (registeredStudent) {
+                successMessage.style.display = 'block';
+                emailInput.value = registeredStudent.email;
+                
+                // Clear session storage after 10 seconds (this is optional)
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 10000);
+            }
+            
+            // Toggle password visibility
+            togglePassword.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    togglePassword.textContent = '🔒';
+                } else {
+                    passwordInput.type = 'password';
+                    togglePassword.textContent = '👁️';
+                }
+            });
+            
+            // Login functionality
+            loginButton.addEventListener('click', function() {
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+                // Validate inputs
+                if (!email) {
+                    showError('Please enter your email address');
+                    return;
+                }
+                
+                if (!password) {
+                    showError('Please enter your password');
+                    return;
+                }
+                
+                // Email format validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showError('Please enter a valid email address');
+                    return;
+                }
+                
+                // Here you would typically make an API call to your backend to verify credentials
+                // For demonstration, let's check if this matches with registered student or a mock account
+                
+                let isAuthenticated = false;
+                
+                // Check if the user is the one who just registered
+                if (registeredStudent && email === registeredStudent.email && password === registeredStudent.password) {
+                    isAuthenticated = true;
+                }
+                
+                // Example mock users (in a real app, this would be handled by server authentication)
+                const mockUsers = [
+                    { email: 'student@school.edu', password: 'password123' },
+                    { email: 'teacher@school.edu', password: 'teacher2023' }
+                ];
+                
+                // Check against mock users
+                mockUsers.forEach(user => {
+                    if (email === user.email && password === user.password) {
+                        isAuthenticated = true;
+                    }
+                });
+                
+                if (isAuthenticated) {
+                    // Store login status in session/local storage (for demo purposes)
+                    sessionStorage.setItem('loggedInUser', JSON.stringify({ email: email }));
+                    
+                    // Redirect to dashboard/home page
+                    window.location.href = 'scannerTest.html';
+                } else {
+                    showError('Invalid email or password. Please try again.');
+                }
+            });
+            
+            // Function to display error messages
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                
+                // Hide error after 5 seconds
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+            
+            // Optional: press Enter to submit form
+            passwordInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    loginButton.click();
+                }
+            });
+            
+            // Optional: Clear error message when user starts typing
+            emailInput.addEventListener('input', function() {
+                errorMessage.style.display = 'none';
+            });
+            
+            passwordInput.addEventListener('input', function() {
+                errorMessage.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

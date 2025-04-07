@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student QR Scanner</title>
+    <!-- jsQR library for QR code detection -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+    <style>
+        /* Base styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .panel {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #333;
+        }
+
+        /* Camera section */
+        .camera-section {
+            margin-bottom: 24px;
+        }
+
+        .camera-container {
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 4/3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #video {
+            display: none;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #canvas {
+            display: none;
+        }
+
+        .camera-frame {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border: 2px dashed rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: #673AB7;
+            border-style: solid;
+            border-width: 0;
+        }
+
+        .top-left {
+            top: 0;
+            left: 0;
+            border-top-width: 3px;
+            border-left-width: 3px;
+        }
+
+        .top-right {
+            top: 0;
+            right: 0;
+            border-top-width: 3px;
+            border-right-width: 3px;
+        }
+
+        .bottom-left {
+            bottom: 0;
+            left: 0;
+            border-bottom-width: 3px;
+            border-left-width: 3px;
+        }
+
+        .bottom-right {
+            bottom: 0;
+            right: 0;
+            border-bottom-width: 3px;
+            border-right-width: 3px;
+        }
+
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(103, 58, 183, 0.5);
+            animation: scan 2s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0;
+            }
+
+            50% {
+                top: 100%;
+            }
+
+            100% {
+                top: 0;
+            }
+        }
+
+        .camera-icon {
+            position: relative;
+            z-index: 1;
+        }
+
+        .pulse {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(103, 58, 183, 0.1);
+            animation: pulse 2s infinite;
+            z-index: -1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.8;
+            }
+
+            70% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* Buttons */
+        .button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .primary-button {
+            background-color: #673AB7;
+            color: white;
+        }
+
+        .primary-button:hover {
+            background-color: #5E35B1;
+        }
+
+        .secondary-button {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .secondary-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            margin: 20px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .divider::before {
+            margin-right: 10px;
+        }
+
+        .divider::after {
+            margin-left: 10px;
+        }
+
+        .footer-text {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin-top: 16px;
+        }
+
+        /* Result display */
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            display: none;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        /* Loading indicator */
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #673AB7;
+            animation: spin 1s ease infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Debug information */
+        #debug-info {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+            display: none;
+        }
+
+        /* Status indicator */
+        .status-indicator {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="panel">
+            <div class="panel-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                    <path d="M8 8h1v1H8z"></path>
+                    <path d="M15 8h1v1h-1z"></path>
+                    <path d="M8 15h1v1H8z"></path>
+                    <path d="m12 12 4 4"></path>
+                    <path d="M12 12v4"></path>
+                    <path d="M12 12h4"></path>
+                </svg>
+                Student QR Scanner
+            </div>
+
+            <div class="camera-section">
+                <div class="camera-container" id="camera-container">
+                    <video id="video"></video>
+                    <canvas id="canvas"></canvas>
+
+                    <div class="camera-frame" id="camera-frame">
+                        <div class="corner top-left"></div>
+                        <div class="corner top-right"></div>
+                        <div class="corner bottom-left"></div>
+                        <div class="corner bottom-right"></div>
+                        <div class="scan-line"></div>
+
+                        <div class="camera-icon" id="camera-icon">
+                            <div class="pulse"></div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="white" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z">
+                                </path>
+                                <circle cx="12" cy="13" r="3"></circle>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="status-indicator" id="status-indicator">Scanning...</div>
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="button primary-button" id="camera-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z">
+                    </path>
+                    <circle cx="12" cy="13" r="3"></circle>
+                </svg>
+                Open Camera
+            </button>
+
+            <div class="divider">OR</div>
+
+            <button class="button secondary-button" id="file-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Browse Files
+            </button>
+            <input type="file" id="file-input" accept="image/*">
+
+            <div id="result"></div>
+            <div id="debug-info"></div>
+
+            <div class="footer-text" id="footer-text">
+                Scan a student QR code to access their page
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        let video, canvas, context, cameraButton, fileButton, fileInput, 
+            resultDisplay, cameraIcon, cameraFrame, loadingIndicator, footerText, statusIndicator, debugInfo;
+        
+        // Configuration flags
+        const DEBUG_MODE = false; // Set to true to show debugging information
+        
+        // Check for login status first
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get DOM elements
+            video = document.getElementById('video');
+            canvas = document.getElementById('canvas');
+            context = canvas.getContext('2d');
+            cameraButton = document.getElementById('camera-button');
+            fileButton = document.getElementById('file-button');
+            fileInput = document.getElementById('file-input');
+            resultDisplay = document.getElementById('result');
+            cameraIcon = document.getElementById('camera-icon');
+            cameraFrame = document.getElementById('camera-frame');
+            loadingIndicator = document.getElementById('loading');
+            footerText = document.getElementById('footer-text');
+            statusIndicator = document.getElementById('status-indicator');
+            debugInfo = document.getElementById('debug-info');
+            
+            // Show debug panel if debug mode is enabled
+            if (DEBUG_MODE) {
+                debugInfo.style.display = 'block';
+                logDebug('Debug mode enabled');
+            }
+            
+            // Check if user is logged in (bypass this check for testing)
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            const bypassLogin = true; // Set to false in production
+
+            if (!loggedInUser && !bypassLogin) {
+                // Redirect to login page if not logged in
+                alert('Please log in to access the student QR scanner');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Initialize scanner if logged in
+            initScanner();
+        });
+
+        // Helper function to log debug information
+        function logDebug(message) {
+            if (DEBUG_MODE) {
+                console.log(message);
+                debugInfo.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+                // Scroll to bottom of debug info
+                debugInfo.scrollTop = debugInfo.scrollHeight;
+            }
+        }
+
+        function initScanner() {
+            let scanning = false;
+            let stream = null;
+            let scanAttempts = 0;
+            const MAX_SCAN_ATTEMPTS = 30; // Limit scan attempts to prevent excessive scanning
+
+            // Function to start the camera
+            async function startCamera() {
+                try {
+                    cameraButton.innerHTML = `
+                        <div class="spinner" style="width: 20px; height: 20px; margin-right: 8px;"></div>
+                        Starting camera...
+                    `;
+                    loadingIndicator.style.display = 'flex';
+                    resultDisplay.style.display = 'none'; // Hide any previous results
+                    
+                    logDebug('Requesting camera access...');
+
+                    // Try to get the back camera first (for mobile devices)
+                    try {
+                        stream = await navigator.mediaDevices.getUserMedia({
+                            video: { 
+                                facingMode: { exact: "environment" },
+                                width: { ideal: 1280 },
+                                height: { ideal: 720 }
+                            },
+                            audio: false
+                        });
+                        logDebug('Back camera accessed successfully');
+                    } catch (backCameraError) {
+                        logDebug('Back camera access failed, trying any camera: ' + backCameraError.message);
+                        // Fall back to any available camera
+                        stream = await navigator.mediaDevices.getUserMedia({
+                            video: true,
+                            audio: false
+                        });
+                        logDebug('Camera accessed successfully');
+                    }
+
+                    // Setup video stream
+                    video.srcObject = stream;
+                    video.setAttribute('playsinline', true); // required for iOS Safari
+                    
+                    // Wait for video to be ready
+                    video.onloadedmetadata = function() {
+                        logDebug(`Video dimensions: ${video.videoWidth}x${video.videoHeight}`);
+                        
+                        video.play()
+                            .then(() => {
+                                // Update UI
+                                cameraIcon.style.display = 'none';
+                                video.style.display = 'block';
+                                statusIndicator.style.display = 'block';
+                                statusIndicator.textContent = 'Scanning...';
+                                
+                                cameraButton.innerHTML = `
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="2" width="20" height="20" rx="5"></rect>
+                                    </svg>
+                                    Stop Camera
+                                `;
+                                loadingIndicator.style.display = 'none';
+
+                                // Reset scan attempts counter
+                                scanAttempts = 0;
+                                
+                                // Set canvas size to match video dimensions
+                                canvas.width = video.videoWidth;
+                                canvas.height = video.videoHeight;
+                                logDebug(`Canvas set to ${canvas.width}x${canvas.height}`);
+
+                                // Start scanning for QR codes
+                                scanning = true;
+                                scanQRCode();
+                            })
+                            .catch(error => {
+                                console.error('Error playing video:', error);
+                                logDebug('Video play error: ' + error.message);
+                                handleCameraError();
+                            });
+                    };
+                    
+                    video.onerror = function() {
+                        console.error('Video error occurred');
+                        logDebug('Video element error');
+                        handleCameraError();
+                    };
+
+                } catch (error) {
+                    console.error('Error accessing the camera:', error);
+                    logDebug('Camera access error: ' + error.message);
+                    handleCameraError();
+                }
+            }
+            
+            // Handle camera errors
+            function handleCameraError() {
+                loadingIndicator.style.display = 'none';
+                cameraButton.textContent = 'Camera access denied';
+                footerText.textContent = 'Cannot access camera. Please check permissions or try uploading an image instead.';
+
+                setTimeout(() => {
+                    cameraButton.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                            <circle cx="12" cy="13" r="3"></circle>
+                        </svg>
+                        Try Again
+                    `;
+                }, 3000);
+            }
+
+            // Function to stop the camera
+            function stopCamera() {
+                if (stream) {
+                    const tracks = stream.getTracks();
+                    tracks.forEach(track => track.stop());
+                    video.srcObject = null;
+                }
+
+                // Update UI
+                video.style.display = 'none';
+                cameraIcon.style.display = 'block';
+                statusIndicator.style.display = 'none';
+                scanning = false;
+                cameraButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                        <circle cx="12" cy="13" r="3"></circle>
+                    </svg>
+                    Open Camera
+                `;
+                
+                logDebug('Camera stopped');
+            }
+
+            // Function to scan for QR codes in video stream
+            function scanQRCode() {
+                if (!scanning) return;
+                
+                scanAttempts++;
+                
+                if (scanAttempts > MAX_SCAN_ATTEMPTS) {
+                    // After many attempts, reduce scan frequency to save resources
+                    setTimeout(scanQRCode, 500); // Scan every 500ms instead of as fast as possible
+                    return;
+                }
+
+                // Only process if video is playing
+                if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                    // Draw current video frame to canvas
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                    // Get image data from canvas
+                    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+                    // Update scan status
+                    if (scanAttempts % 10 === 0) {
+                        statusIndicator.textContent = 'Scanning' + '.'.repeat((scanAttempts / 10) % 4);
+                    }
+
+                    try {
+                        // Use jsQR to detect QR code
+                        const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                            inversionAttempts: "attemptBoth", // Try both light-on-dark and dark-on-light QR codes
+                        });
+
+                        // Process QR code if found
+                        if (code) {
+                            logDebug("QR Code detected: " + code.data.substring(0, 20) + (code.data.length > 20 ? '...' : ''));
+                            handleQRResult(code.data);
+                            return; // Stop scanning after detecting a QR code
+                        }
+                    } catch (error) {
+                        logDebug('QR scanning error: ' + error.message);
+                        // Continue scanning despite error
+                    }
+                }
+
+                // Continue scanning if no QR code was found
+                requestAnimationFrame(scanQRCode);
+            }
+
+            // Function to handle file selection for QR scanning
+            function handleFileSelect(event) {
+                const file = event.target.files[0];
+
+                if (file) {
+                    loadingIndicator.style.display = 'flex';
+                    resultDisplay.style.display = 'none'; // Hide previous results
+                    logDebug('Processing file: ' + file.name);
+
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const img = new Image();
+                        img.onload = function () {
+                            logDebug(`Image dimensions: ${img.width}x${img.height}`);
+                            
+                            // Resize canvas to match image
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+
+                            // Draw image on canvas
+                            context.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                            // Get image data
+                            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+                            try {
+                                // Use jsQR to detect QR code
+                                const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                                    inversionAttempts: "attemptBoth", // Try both light-on-dark and dark-on-light QR codes
+                                });
+
+                                loadingIndicator.style.display = 'none';
+
+                                if (code) {
+                                    logDebug("QR Code detected from image: " + code.data.substring(0, 20) + (code.data.length > 20 ? '...' : ''));
+                                    handleQRResult(code.data);
+                                } else {
+                                    // If no QR code found in original image, try again with inverted colors
+                                    logDebug("No QR code found, trying with image processing...");
+                                    
+                                    // Try with inverted colors
+                                    context.filter = 'invert(100%)';
+                                    context.drawImage(img, 0, 0, canvas.width, canvas.height);
+                                    
+                                    const invertedImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                                    const invertedCode = jsQR(invertedImageData.data, invertedImageData.width, invertedImageData.height, {
+                                        inversionAttempts: "attemptBoth",
+                                    });
+                                    
+                                    // Reset filter
+                                    context.filter = 'none';
+                                    
+                                    if (invertedCode) {
+                                        logDebug("QR Code detected after processing: " + invertedCode.data.substring(0, 20) + (invertedCode.data.length > 20 ? '...' : ''));
+                                        handleQRResult(invertedCode.data);
+                                    } else {
+                                        showResult("No QR code found in the selected image. Try a clearer image or different QR code format.", false);
+                                    }
+                                }
+                            } catch (error) {
+                                loadingIndicator.style.display = 'none';
+                                logDebug('Error processing image: ' + error.message);
+                                showResult("Error processing the image. Try a different image.", false);
+                            }
+                        };
+                        img.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            // Function to handle QR code result
+            function handleQRResult(data) {
+                // Stop camera after successful scan
+                stopCamera();
+                
+                // Try multiple approaches to handle the QR data
+                try {
+                    // Attempt to parse as JSON
+                    try {
+                        const jsonData = JSON.parse(data);
+                        logDebug("Parsed QR JSON data type: " + jsonData.type);
+
+                        // Handle student QR code
+                        if (jsonData.type === 'student') {
+                            // Show processing message
+                            showResult(`Found student ID: ${jsonData.studentId}. Redirecting...`, true);
+                            
+                            // Store the studentId in session storage for use on the student page
+                            sessionStorage.setItem('currentStudentId', jsonData.studentId);
+                            
+                            // Redirect to landing page after a brief delay
+                            setTimeout(() => {
+                                window.location.href = 'landing.html';
+                            }, 1500);
+                            return;
+                        } 
+                        // Handle attendance QR code
+                        else if (jsonData.type === 'attendance') {
+                            // Record attendance
+                            const attendanceRecord = {
+                                studentId: jsonData.studentId,
+                                className: jsonData.className,
+                                timestamp: new Date().toISOString()
+                            };
+
+                            // Get existing records or initialize empty array
+                            const existingRecords = JSON.parse(sessionStorage.getItem('attendanceRecords')) || [];
+                            existingRecords.push(attendanceRecord);
+                            sessionStorage.setItem('attendanceRecords', JSON.stringify(existingRecords));
+
+                            // Show success message
+                            showResult(`Attendance recorded for ${jsonData.studentName || 'student'} in ${jsonData.className}`, true);
+                            return;
+                        }
+                    } catch (jsonError) {
+                        logDebug("Not valid JSON: " + jsonError.message);
+                        // Not JSON data, continue to other formats
+                    }
+                    
+                    // Check for student ID pattern (e.g., "STUDENT:12345")
+                    if (data.startsWith('STUDENT:')) {
+                        const studentId = data.split(':')[1];
+                        showResult(`Found student ID: ${studentId}. Redirecting...`, true);
+                        
+                        // Store the studentId in session storage
+                        sessionStorage.setItem('currentStudentId', studentId);
+                        
+                        // Redirect to landing page
+                        setTimeout(() => {
+                            window.location.href = 'landing.html';
+                        }, 1500);
+                        return;
+                    }
+                    
+                    // Check if it's a URL
+                    if (data.startsWith('http')) {
+                        showResult("Link detected in QR code", true);
+                        
+                        // Add option to open URL
+                        const resultElement = document.getElementById('result');
+                        resultElement.innerHTML += `<br><br><a href="${data}" target="_blank" style="color: #1976D2;">Open Link</a>`;
+                        return;
+                    }
+                    
+                    // Handle numeric-only student IDs (common format)
+                    if (/^\d+$/.test(data)) {
+                        const studentId = data;
+                        showResult(`Found student ID: ${studentId}. Redirecting...`, true);
+                        
+                        // Store the studentId in session storage
+                        sessionStorage.setItem('currentStudentId', studentId);
+                        
+                        // Redirect to landing page
+                        setTimeout(() => {
+                            window.location.href = 'landing.html';
+                        }, 1500);
+                        return;
+                    }
+                    
+                    // Display the raw data for debugging
+                    showResult("Unrecognized QR code format. Raw data: " + data, false);
+                    logDebug("Raw QR data: " + data);
+                    
+                } catch (e) {
+                    logDebug("Error handling QR result: " + e.message);
+                    showResult("Error processing QR code. Please try again.", false);
+                }
+            }
+
+            // Function to display result
+            function showResult(message, success) {
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = message;
+                resultElement.style.display = 'block';
+
+                if (success) {
+                    resultElement.style.backgroundColor = '#e8f5e9';
+                    resultElement.style.color = '#2e7d32';
+                } else {
+                    resultElement.style.backgroundColor = '#ffebee';
+                    resultElement.style.color = '#c62828';
+                    resultElement.style.backgroundColor = '#ffebee';
+                    resultElement.style.color = '#c62828';
+                }
+                
+                logDebug('Result displayed: ' + message);
+            }
+
+            // Function to reset the scanner UI
+            function resetScanner() {
+                // Hide result display
+                resultDisplay.style.display = 'none';
+                
+                // Reset file input
+                fileInput.value = '';
+                
+                // Update footer text
+                footerText.textContent = 'Scan a student QR code to access their page';
+                
+                logDebug('Scanner UI reset');
+            }
+
+            // Set up event listeners
+            
+            // Camera button click event
+            cameraButton.addEventListener('click', function() {
+                // If camera is active, stop it. Otherwise start it.
+                if (scanning) {
+                    stopCamera();
+                } else {
+                    startCamera();
+                }
+            });
+            
+            // File button click event
+            fileButton.addEventListener('click', function() {
+                // Trigger file input click
+                fileInput.click();
+            });
+            
+            // File input change event
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // Handle visibility change (pause camera when tab/app is not visible)
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden && scanning) {
+                    logDebug('Page hidden, pausing camera');
+                    
+                    // We don't fully stop the camera here, just pause scanning to save resources
+                    scanning = false;
+                } else if (!document.hidden && stream && !scanning) {
+                    logDebug('Page visible again, resuming camera');
+                    
+                    // Resume scanning if stream exists
+                    scanning = true;
+                    scanQRCode();
+                }
+            });
+
+            // Optional: Detect device orientation changes to improve scanning on mobile
+            window.addEventListener('orientationchange', function() {
+                if (scanning) {
+                    logDebug('Orientation changed, restarting camera');
+                    // Briefly stop and restart camera to adjust to new orientation
+                    stopCamera();
+                    
+                    // Short delay before restarting
+                    setTimeout(() => {
+                        startCamera();
+                    }, 500);
+                }
+            });
+
+            // Add ability to retry scan after result
+            resultDisplay.addEventListener('click', function(e) {
+                // Prevent clicks on links inside the result from triggering this
+                if (e.target.tagName !== 'A') {
+                    if (confirm('Scan another QR code?')) {
+                        resetScanner();
+                        startCamera();
+                    }
+                }
+            });
+            
+            // Generate sample QR code for testing in debug mode
+            if (DEBUG_MODE) {
+                const debugPanel = document.getElementById('debug-info');
+                
+                // Add a button to generate test QR code
+                const testButton = document.createElement('button');
+                testButton.textContent = 'Generate Test QR';
+                testButton.style.marginTop = '10px';
+                testButton.style.padding = '5px';
+                
+                testButton.addEventListener('click', function() {
+                    // Sample student data for testing
+                    const testStudentData = JSON.stringify({
+                        type: 'student',
+                        studentId: '12345',
+                        name: 'Test Student'
+                    });
+                    
+                    // Mock handling QR result
+                    handleQRResult(testStudentData);
+                });
+                
+                debugPanel.appendChild(testButton);
+            }
+            
+            // Feature detection and warnings
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                cameraButton.disabled = true;
+                cameraButton.textContent = 'Camera not supported';
+                footerText.textContent = 'Your browser does not support camera access. Try using a modern browser or upload an image instead.';
+                logDebug('MediaDevices API not supported');
+            }
+            
+            // Check for jsQR library
+            if (typeof jsQR !== 'function') {
+                cameraButton.disabled = true;
+                fileButton.disabled = true;
+                footerText.textContent = 'QR scanning library not loaded. Please check your internet connection and refresh.';
+                logDebug('jsQR library not loaded');
+            }
+        }
+
+        // Helper function to create a mock student QR code for testing
+        function generateMockStudentQR() {
+            // This would normally be done with a QR code generation library,
+            // but for simplicity we'll just return the JSON string a QR would contain
+            return JSON.stringify({
+                type: 'student',
+                studentId: Math.floor(10000 + Math.random() * 90000).toString(), // Random 5-digit ID
+                name: 'Test Student',
+                class: '2025',
+                lastScan: new Date().toISOString()
+            });
+        }
+
+        // Helper function for URL parsing (to handle deep links)
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        // Check for deep link parameters (e.g., ?studentId=12345)
+        const deepLinkStudentId = getParameterByName('studentId');
+        if (deepLinkStudentId) {
+            // Store the studentId from URL parameter
+            sessionStorage.setItem('currentStudentId', deepLinkStudentId);
+            
+            // Redirect to student page
+            window.location.href = 'landing.html';
+        }
+    </script>
+</body>
+
+</html>

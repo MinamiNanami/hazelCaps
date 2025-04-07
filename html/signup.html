@@ -2,80 +2,66 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Signup</title>
-  <link rel="stylesheet" href="../css/signUpStyle.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Classroom - Sign Up</title>
+    <link rel="stylesheet" href="../css/signupStyle.css">
 </head>
 
 <body>
-  <header class="header">
-    <div class="logo">
-      <img src="../images/schoolLogo.jpg" alt="Logo"
-        style="width: 60px; height: 60px; border-radius: 50%; margin-right: 10px;">
-      PINAGBARILAN ELEMENTARY SCHOOL
+    <div class="main-content">
+        <div class="signup-card">
+            <h1 class="signup-title">Join My Classroom</h1>
+
+            <div class="form-group">
+                <label for="fullname"> Student's Full Name</label>
+                <input type="text" id="student" placeholder="Student's full name">
+            </div>
+
+            <div class="form-group">
+                <label for="email"> Student's email address</label>
+                <input type="email" id="email" placeholder="Enter your email address">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Create a password">
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="password" placeholder="Confirm password">
+            </div>
+
+            <div class="form-group">
+                <label for="student-id">Student ID</label>
+                <input type="text" id="student-id" placeholder="2021134523">
+            </div>
+
+            <div class="form-group">
+                <label for="grade">Grade Level</label>
+                <select id="grade">
+                    <option value="" selected disabled> Grade level </option>
+                    <option value="4">4th Grade</option>
+                    <option value="5">5th Grade</option>
+                    <option value="6">6th Grade</option>
+                </select>
+            </div>
+
+            <button class="submit-btn" onclick="validateForm()">Sign Up</button>
+
+            <div class="login-link">
+                Already have an account? <a href="login.html">Log In</a>
+            </div>
+
+            <div class="colorful-footer">
+                <div class="color-block" style="background-color: #4285f4;"></div>
+                <div class="color-block" style="background-color: #34a853;"></div>
+                <div class="color-block" style="background-color: #9c27b0;"></div>
+                <div class="color-block" style="background-color: #ea4335;"></div>
+            </div>
+        </div>
     </div>
-  </header>
-
-  <main class="main-container">
-    <div class="form-card">
-      <h2 class="form-title">Create Your Account</h2>
-
-      <form>
-        <div class="form-group">
-          <label class="form-label">Name</label>
-          <div class="form-row">
-            <div class="form-column">
-              <input type="text" class="form-input" placeholder="First">
-              <div class="field-label">First</div>
-            </div>
-            <div class="form-column small">
-              <input type="text" class="form-input" placeholder="Middle">
-              <div class="field-label">Middle</div>
-            </div>
-            <div class="form-column">
-              <input type="text" class="form-input" placeholder="Last">
-              <div class="field-label">Last</div>
-            </div>
-            <div class="form-column smaller">
-              <input type="text" class="form-input" placeholder="Suffix">
-              <div class="field-label">Suffix <span class="optional-text">(opt)</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input type="email" class="form-input" placeholder="juandelacruz@example.com" value="">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-input" placeholder="********" value="">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Student ID</label>
-          <input type="text" class="form-input" placeholder="2021123456" value="">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Grade</label>
-          <input type="text" class="form-input" placeholder="Grade Level" value="">
-        </div>
-
-        <button type="button" class="sign-up-btn">Sign Up</button>
-      </form>
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-links">
-      <a href="#" class="footer-link">Privacy Policy</a>
-      <a href="#" class="footer-link">Terms of Service</a>
-      <a href="#" class="footer-link">Contact Us</a>
-    </div>
-  </footer>
 </body>
 
 </html>
