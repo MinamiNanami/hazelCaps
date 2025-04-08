@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exams - Pinagbarilan Elementary School</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<style>
+    body {
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: #f9f9f9;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #4285f4;
+        padding: 12px 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        color: white;
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    .logo img {
+        height: 60px;
+        width: 60px;
+        margin-right: 10px;
+        border-radius: 700px;
+        cursor: pointer;
+    }
+
+    .user-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: 3px solid #ffde03;
+        background-color: #ff9900;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    main {
+        flex: 1;
+        display: flex;
+    }
+
+    .sidebar {
+        width: 200px;
+        background-color: #e6f2ff;
+        padding: 15px;
+        border-right: 1px solid #c9e2ff;
+    }
+
+    .sidebar h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #4a90e2;
+        text-align: center;
+    }
+
+    .sidebar ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .sidebar li {
+        margin: 15px 0;
+        padding: 10px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        color: #4a4a4a;
+        cursor: pointer;
+    }
+
+    /* Styling for subcategories */
+    .subcategories {
+        margin-left: 15px;
+        display: none;
+    }
+
+    .subcategories li {
+        background-color: #f0f7ff;
+        margin: 8px 0;
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .subcategories li:hover {
+        background-color: #d9ebff;
+    }
+
+    /* Active class to show subcategories */
+    .active .subcategories {
+        display: block;
+    }
+
+    /* Quarter item styling */
+    .quarter-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Content area for exams */
+    .content {
+        flex: 1;
+        padding: 20px;
+        background-color: #f0f7ff;
+    }
+
+    /* Page title */
+    .page-title {
+        color: #4285f4;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #c9e2ff;
+        font-size: 24px;
+    }
+
+    /* Exam list */
+    .exam-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .exam-card {
+        width: 300px;
+        height: 250px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .exam-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .exam-title {
+        font-size: 18px;
+        color: #4a4a4a;
+        margin-bottom: 10px;
+        justify-content: center;
+        display: flex;
+    }
+
+    .exam-info {
+        display: flex;
+        justify-content: space-between;
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .exam-description {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+        flex-grow: 1;
+    }
+
+    .exam-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: auto;
+    }
+
+    .exam-button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 14px;
+        transition: background-color 0.2s;
+        width: 100%;
+    }
+
+    .view-button {
+        background-color: #4285f4;
+        color: white;
+    }
+
+    .view-button:hover {
+        background-color: #3367d6;
+    }
+
+    .review-button {
+        background-color: #4285f4;
+        color: white;
+    }
+
+    .review-button:hover {
+        background-color: #3367d6;
+    }
+
+    /* Breadcrumb navigation */
+    .breadcrumb {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+    .breadcrumb li {
+        display: flex;
+        align-items: center;
+    }
+
+    .breadcrumb li:not(:last-child)::after {
+        content: "›";
+        margin: 0 8px;
+        color: #777;
+    }
+
+    .breadcrumb a {
+        color: #4285f4;
+        text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+        text-decoration: underline;
+    }
+
+    .breadcrumb .current {
+        color: #777;
+    }
+
+    .completed-exam {
+        border-left: 4px solid #34a853;
+        background-color: #f8fdf9;
+    }
+
+    .completed-info {
+        display: flex;
+        align-items: center;
+        color: #34a853;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .completed-info svg {
+        margin-right: 5px;
+    }
+
+    .completed-score {
+        margin-top: 3px;
+        color: #5b9bd5;
+        font-size: 14px;
+    }
+
+    .upcoming-exam {
+        border-left: 4px solid #fbbc05;
+        background-color: #fffdf5;
+    }
+
+    .upcoming-info {
+        display: flex;
+        align-items: center;
+        color: #fbbc05;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .upcoming-info svg {
+        margin-right: 5px;
+    }
+
+    /* Bloom's Taxonomy Section */
+    .blooms-taxonomy {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-top: 30px;
+    }
+
+    .blooms-taxonomy h2 {
+        color: #4285f4;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #c9e2ff;
+        text-align: center;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 400px;
+        max-width: 600px;
+        margin: 0 auto 30px auto;
+    }
+
+    .blooms-summary {
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+    }
+
+    .blooms-summary h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .blooms-summary p {
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .blooms-examples {
+        margin-top: 20px;
+    }
+
+    .blooms-examples h3 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .example-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 15px;
+    }
+
+    .example-card {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .example-card h4 {
+        margin-top: 0;
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 14px;
+    }
+
+    .example-card p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .legend-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin: 0 10px 10px 0;
+        font-size: 14px;
+    }
+
+    .legend-color {
+        width: 15px;
+        height: 15px;
+        margin-right: 5px;
+        border-radius: 50%;
+    }
+</style>
+
+<body>
+    <div class="header">    
+        <div class="header-left">
+            <div class="logo">
+                <img src="../images/schoolLogo.jpg" alt="Logo" onclick="location.href='landing'">
+                <span>PINAGBARILAN ELEMENTARY SCHOOL</span>
+            </div>
+        </div>
+
+        <div class="user-avatar">S</div>
+    </div>
+    <main>
+        <aside class="sidebar">
+            <h2>English</h2>
+            <ul class="quarters-list">
+                <li class="quarter active">
+                    <div class="quarter-item">1st Quarter</div>
+                    <ul class="subcategories">
+                        <li onclick="location.href='exams1.html'">Exams</li>
+                        <li onclick="location.href='quizzes1.html'">Quizzes</li>
+                    </ul>
+                </li>
+                <li class="quarter">
+                    <div class="quarter-item">2nd Quarter</div>
+                    <ul class="subcategories">
+                        <li onclick="location.href='exams2.html'">Exams</li>
+                        <li onclick="location.href='quizzes2.html'">Quizzes</li>
+                    </ul>
+                </li>
+                <li class="quarter">
+                    <div class="quarter-item">3rd Quarter</div>
+                    <ul class="subcategories">
+                        <li onclick="location.href='exams3.html'">Exams</li>
+                        <li onclick="location.href='quizzes3.html'">Quizzes</li>
+                    </ul>
+                </li>
+                <li class="quarter">
+                    <div class="quarter-item">4th Quarter</div>
+                    <ul class="subcategories">
+                        <li onclick="location.href='exams4.html'">Exams</li>
+                        <li onclick="location.href='quizzes4.html'">Quizzes</li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <section class="content">
+            <ul class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">English</a></li>
+                <li><a href="#">1st Quarter</a></li>
+                <li class="current">Exams</li>
+            </ul>
+
+            <h1 class="page-title">English - 1st Quarter Exams</h1>
+
+            <div class="exam-list">
+                <div class="exam-card upcoming-exam">
+                    <h3 class="exam-title">Periodical Exam</h3>
+                    <div class="exam-info">
+                        <span>Date: September 30, 2025</span>
+                        <span>50 questions</span>
+                    </div>
+                    <div class="upcoming-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span>Upcoming exam</span>
+                    </div>
+                    <p class="exam-description">Comprehensive exam covering all 1st Quarter materials including grammar,
+                        vocabulary, and reading comprehension.</p>
+                    <div class="exam-actions">
+                        <button class="exam-button view-button">View Exam Details</button>
+                    </div>
+                </div>
+
+                <div class="exam-card completed-exam">
+                    <h3 class="exam-title">Summative Exam</h3>
+                    <div class="exam-info">
+                        <span>Date: August 15, 2025</span>
+                        <span>30 questions</span>
+                    </div>
+                    <div class="completed-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        <span class="completed-score">Score: 27/30</span>
+                    </div>
+                    <p class="exam-description">Midterm assessment covering parts of speech, sentence structure, and
+                        basic reading comprehension.</p>
+                    <div class="exam-actions">
+                        <button class="exam-button review-button">Review Exam</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bloom's Taxonomy Section with Radar Chart -->
+            <div class="blooms-taxonomy">
+                <h2>Bloom's Taxonomy Evaluation</h2>
+
+                <div class="legend-container">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: rgba(76, 175, 80, 0.7);"></div>
+                        <span>Remember: 20%</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: rgba(33, 150, 243, 0.7);"></div>
+                        <span>Understand: 35%</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: rgba(63, 81, 181, 0.7);"></div>
+                        <span>Apply: 20%</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: rgba(156, 39, 176, 0.7);"></div>
+                        <span>Analyze: 15%</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: rgba(255, 152, 0, 0.7);"></div>
+                        <span>Evaluate: 8%</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: rgba(244, 67, 54, 0.7);"></div>
+                        <span>Create: 2%</span>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="bloomsChart"></canvas>
+                </div>
+
+                <div class="blooms-summary">
+                    <h3>Assessment Analysis</h3>
+                    <p>The 1st Quarter English exams are primarily focused on testing understanding and recall of basic
+                        concepts, with a combined 55% of questions in these lower-order thinking categories. Application
+                        and analysis questions make up 35% of the assessment, while higher-order thinking skills
+                        (evaluate and create) compose only 10% of the questions. This distribution is appropriate for
+                        the beginning of the school year as students build their foundational knowledge.</p>
+                </div>
+
+                <div class="blooms-examples">
+                    <h3>Sample Questions by Category</h3>
+                    <div class="example-cards">
+                        <div class="example-card">
+                            <h4>Remember</h4>
+                            <p>"List the eight parts of speech with an example of each."</p>
+                        </div>
+
+                        <div class="example-card">
+                            <h4>Understand</h4>
+                            <p>"Explain the difference between a simile and a metaphor."</p>
+                        </div>
+
+                        <div class="example-card">
+                            <h4>Apply</h4>
+                            <p>"Rewrite the following sentence using the correct verb tense."</p>
+                        </div>
+
+                        <div class="example-card">
+                            <h4>Analyze</h4>
+                            <p>"Compare and contrast the characters' motivations in the two short stories."</p>
+                        </div>
+
+                        <div class="example-card">
+                            <h4>Evaluate</h4>
+                            <p>"Critique the author's argument and provide evidence to support your position."</p>
+                        </div>
+
+                        <div class="example-card">
+                            <h4>Create</h4>
+                            <p>"Write an alternative ending to the story that maintains consistency with the
+                                characters."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Add event listeners to all quarter items
+        document.querySelectorAll('.quarter').forEach(quarter => {
+            quarter.addEventListener('click', function (e) {
+                // Prevent the click from propagating to parent elements
+                e.stopPropagation();
+
+                // Toggle active class to show/hide subcategories
+                this.classList.toggle('active');
+
+                // Close other open quarters
+                document.querySelectorAll('.quarter').forEach(item => {
+                    if (item !== this && item.classList.contains('active')) {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Initialize the Bloom's Taxonomy radar chart
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('bloomsChart').getContext('2d');
+
+            const bloomsChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Remember', 'Understand', 'Apply', 'Analyze', 'Evaluate', 'Create'],
+                    datasets: [{
+                        label: 'Bloom\'s Taxonomy Distribution',
+                        data: [20, 35, 20, 15, 8, 2],
+                        backgroundColor: 'rgba(65, 131, 215, 0.2)',
+                        borderColor: 'rgba(65, 131, 215, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: [
+                            'rgba(76, 175, 80, 1)',    // Remember - Green
+                            'rgba(33, 150, 243, 1)',   // Understand - Blue
+                            'rgba(63, 81, 181, 1)',    // Apply - Indigo
+                            'rgba(156, 39, 176, 1)',   // Analyze - Purple
+                            'rgba(255, 152, 0, 1)',    // Evaluate - Orange
+                            'rgba(244, 67, 54, 1)'     // Create - Red
+                        ],
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(65, 131, 215, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 40,
+                            ticks: {
+                                display: false,
+                                stepSize: 10,
+                                callback: function (value) {
+                                    return value + '%';
+                                }
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 14,
+                                    family: "'Comic Sans MS', 'Chalkboard SE', sans-serif"
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return context.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

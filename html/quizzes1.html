@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizzes - Pinagbarilan Elementary School</title>
+</head>
+<style>
+    body {
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: #f9f9f9;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #4285f4;
+        padding: 12px 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        color: white;
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    .logo img {
+        height: 60px;
+        width: 60px;
+        margin-right: 10px;
+        border-radius: 700px;
+        cursor: pointer;
+    }
+
+    .user-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: 3px solid #ffde03;
+        background-color: #ff9900;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    main {
+        flex: 1;
+        display: flex;
+    }
+
+    .sidebar {
+        width: 200px;
+        background-color: #e6f2ff;
+        padding: 15px;
+        border-right: 1px solid #c9e2ff;
+    }
+
+    .sidebar h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #4a90e2;
+        text-align: center;
+    }
+
+    .sidebar ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .sidebar li {
+        margin: 15px 0;
+        padding: 10px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        color: #4a4a4a;
+        cursor: pointer;
+    }
+
+
+    /* Styling for subcategories */
+    .subcategories {
+        margin-left: 15px;
+        display: none;
+    }
+
+    .subcategories li {
+        background-color: #f0f7ff;
+        margin: 8px 0;
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .subcategories li:hover {
+        background-color: #d9ebff;
+    }
+
+    /* Active class to show subcategories */
+    .active .subcategories {
+        display: block;
+    }
+
+
+    /* Quarter item styling */
+    .quarter-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Content area for quizzes */
+    .content {
+        flex: 1;
+        padding: 20px;
+        background-color: #f0f7ff;
+    }
+
+    /* Page title */
+    .page-title {
+        color: #4285f4;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #c9e2ff;
+        font-size: 24px;
+    }
+
+    /* Quiz list */
+    .quiz-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .quiz-card {
+        width: 300px;
+        height: 220px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .quiz-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .quiz-title {
+        font-size: 18px;
+        color: #4a4a4a;
+        margin-bottom: 10px;
+        justify-content: center;
+        display: flex;
+    }
+
+    .quiz-info {
+        display: flex;
+        justify-content: space-between;
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .quiz-description {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+        flex-grow: 1;
+        /* This makes the description take up available space */
+    }
+
+    .quiz-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: auto;
+        /* This pushes the buttons to the bottom */
+    }
+
+    .quiz-button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 14px;
+        transition: background-color 0.2s;
+        width: 48%;
+        /* Set consistent width */
+    }
+
+    .view-button {
+        background-color: #4285f4;
+        color: white;
+    }
+
+    .view-button:hover {
+        background-color: #3367d6;
+    }
+
+    .download-button {
+        background-color: #34a853;
+        color: white;
+    }
+
+    .download-button:hover {
+        background-color: #2d8e47;
+    }
+
+    /* Breadcrumb navigation */
+    .breadcrumb {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+    .breadcrumb li {
+        display: flex;
+        align-items: center;
+    }
+
+    .breadcrumb li:not(:last-child)::after {
+        content: "›";
+        margin: 0 8px;
+        color: #777;
+    }
+
+    .breadcrumb a {
+        color: #4285f4;
+        text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+        text-decoration: underline;
+    }
+
+    .breadcrumb .current {
+        color: #777;
+    }
+
+    .completed-quiz {
+        border-left: 4px solid #34a853;
+        background-color: #f8fdf9;
+    }
+
+    .completed-info {
+        display: flex;
+        align-items: center;
+        color: #34a853;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .completed-info svg {
+        margin-right: 5px;
+    }
+
+    .completed-quiz .quiz-button {
+        opacity: 0.8;
+    }
+
+    .completed-quiz .view-button {
+        background-color: #4285f4;
+    }
+
+    .completed-score {
+        margin-top: 3px;
+        color: #5b9bd5;
+        font-size: 14px;
+    }
+</style>
+
+<body>
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">
+                <img src="../images/schoolLogo.jpg" alt="Logo" onclick="lcoation.href='landing'">
+                <span> PINAGBARILAN ELEMENTARY SCHOOL</span>
+            </div>
+        </div>
+
+        <div class="user-avatar">S</div>
+    </div>
+    <main>
+        <aside class="sidebar">
+            <h2> English </h2>
+            <ul class="quarters-list">
+                <li class="quarter">
+                    <div class="quarter-item">1st Quarter</div>
+                    <ul class="subcategories">
+                        <li>Exams</li>
+                        <li onclick="location.href='quizzes1.html'">Quizzes</li>
+                    </ul>
+                </li>
+                <li class="quarter">
+                    <div class="quarter-item">2nd Quarter</div>
+                    <ul class="subcategories">
+                        <li>Exams</li>
+                        <li onclick="location.href='quizzes2.html'">Quizzes</li>
+                    </ul>
+                </li>
+                <li class="quarter">
+                    <div class="quarter-item">3rd Quarter</div>
+                    <ul class="subcategories">
+                        <li>Exams</li>
+                        <li onclick="location.href='quizzes3.html'">Quizzes</li>
+                    </ul>
+                </li>
+                <li class="quarter">
+                    <div class="quarter-item">4th Quarter</div>
+                    <ul class="subcategories">
+                        <li>Exams</li>
+                        <li onclick="location.href='quizzes4.html'">Quizzes</li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <section class="content">
+            <ul class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">English</a></li>
+                <li><a href="#">1st Quarter</a></li>
+                <li class="current">Quizzes</li>
+            </ul>
+
+            <h1 class="page-title">English - 1st Quarter Quizzes</h1>
+
+            <div class="quiz-list">
+                <div class="quiz-card">
+                    <h3 class="quiz-title">Quiz #4</h3>
+                    <div class="quiz-info">
+                        <span>Deadline: </span>
+                    </div>
+                    <p class="quiz-description">Surprise Quiz </p>
+                    <div class="quiz-actions">
+                        <button class="quiz-button view-button">View Quiz</button>
+
+                    </div>
+                </div>
+
+                <div class="quiz-card">
+                    <h3 class="quiz-title">Quiz #3</h3>
+                    <div class="quiz-info">
+                        <span>Deadline: </span>
+                    </div>
+                    <p class="quiz-description"> "" </p>
+                    <div class="quiz-actions">
+                        <button class="quiz-button view-button">View Quiz</button>
+
+                    </div>
+                </div>
+
+                <div class="quiz-card">
+                    <h3 class="quiz-title">Quiz #2</h3>
+                    <div class="quiz-info">
+                        <span>Deadline: </span>
+                    </div>
+                    <p class="quiz-description"> "" </p>
+                    <div class="quiz-actions">
+                        <button class="quiz-button view-button">View Quiz</button>
+
+                    </div>
+                </div>
+
+                <div class="quiz-list">
+                    <div class="quiz-card completed-quiz">
+                        <h3 class="quiz-title">Quiz #1: Grammar Basics</h3>
+                        <div class="quiz-info">
+                            <span>Finished: </span>
+                            <span>10 questions</span>
+                        </div>
+                        <div class="completed-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <span class="completed-score"> Score: 9/10</span>
+                        </div>
+                        <p class="quiz-description"> "" </p>
+                        <div class="quiz-actions">
+                            <button class="quiz-button view-button">Review Quiz</button>
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </main>
+
+    <script>
+        // Add event listeners to all quarter items
+        document.querySelectorAll('.quarter').forEach(quarter => {
+            quarter.addEventListener('click', function (e) {
+                // Prevent the click from propagating to parent elements
+                e.stopPropagation();
+
+                // Toggle active class to show/hide subcategories
+                this.classList.toggle('active');
+
+                // Close other open quarters
+                document.querySelectorAll('.quarter').forEach(item => {
+                    if (item !== this && item.classList.contains('active')) {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+    </script>
+</body>
+
+</html>

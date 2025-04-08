@@ -311,31 +311,31 @@
             <h2> English </h2>
             <ul class="quarters-list">
                 <li class="quarter">
-                    <div class="quarter-item">1st Quarter</div>
+                    <div class="quarter-item">1nd Quarter</div>
                     <ul class="subcategories">
                         <li>Exams</li>
-                        <li class="active-item">Quizzes</li>
+                        <li onclick="location.href='quizzes1.html'">Quizzes</li>
                     </ul>
                 </li>
                 <li class="quarter">
                     <div class="quarter-item">2nd Quarter</div>
                     <ul class="subcategories">
                         <li>Exams</li>
-                        <li>Quizzes</li>
+                        <li onclick="location.href='quizzes2.html'">Quizzes</li>
                     </ul>
                 </li>
                 <li class="quarter">
                     <div class="quarter-item">3rd Quarter</div>
                     <ul class="subcategories">
                         <li>Exams</li>
-                        <li>Quizzes</li>
+                        <li onclick="location.href='quizzes3.html'">Quizzes</li>
                     </ul>
                 </li>
                 <li class="quarter">
                     <div class="quarter-item">4th Quarter</div>
                     <ul class="subcategories">
                         <li>Exams</li>
-                        <li>Quizzes</li>
+                        <li onclick="location.href='quizzes4.html'">Quizzes</li>
                     </ul>
                 </li>
             </ul>
@@ -345,7 +345,7 @@
             <ul class="breadcrumb">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">English</a></li>
-                <li><a href="#">1st Quarter</a></li>
+                <li><a href="#">2nd Quarter</a></li>
                 <li class="current">Quizzes</li>
             </ul>
 
@@ -414,9 +414,6 @@
     </main>
 
     <script>
-        // Make the first quarter expanded by default
-        document.querySelector('.quarter:first-child').classList.add('active');
-
         // Add event listeners to all quarter items
         document.querySelectorAll('.quarter').forEach(quarter => {
             quarter.addEventListener('click', function (e) {
