@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            display: flex;
+            width: 1000px;
+            height: 700px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .left-section {
+            position: relative;
+            width: 40%;
+            background-color: #5e3bee;
+            overflow: hidden;
+        }
+        
+        .purple-blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background-color: rgba(117, 81, 233, 0.8);
+            border-radius: 50%;
+            top: -100px;
+            left: -100px;
+        }
+        
+        .white-circle {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            bottom: 50px;
+            left: 30px;
+        }
+        
+        .purple-circle {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background-color: rgba(117, 81, 233, 0.8);
+            border-radius: 50%;
+            bottom: -40px;
+            right: -40px;
+        }
+        
+        .floating-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+        }
+        
+        .floating-image img {
+            width: 280px;
+            height: 280px;
+            height: auto;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-left: 25px;
+        }
+        
+        .right-section {
+            width: 60%;
+            background-color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .right-section-inner {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo-icon img {
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .login-heading {
+            color: #333;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .login-subheading {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: #5e3bee;
+            outline: none;
+        }
+        
+        .password-input-container {
+            position: relative;
+        }
+        
+        .password-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 25px;
+        }
+        
+        .forgot-password a {
+            color: #5e3bee;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #5e3bee;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .login-button:hover {
+            background-color: #4f31c7;
+        }
+        
+        .create-account {
+            margin-top: 25px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .create-account a {
+            color: #5e3bee;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .teacher-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: #5e3bee;
+        }
+        
+        .teacher-features {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .teacher-features h3 {
+            color: #5e3bee;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .feature-list {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .feature-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            color: #555;
+        }
+        
+        .feature-icon {
+            background-color: rgba(94, 59, 238, 0.1);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+        }
+        
+        /* Teacher-specific styles */
+        .teacher-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            background-color: #5e3bee;
+            color: white;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="left-section">
+            <div class="purple-blob"></div>
+            <div class="white-circle"></div>
+            <div class="floating-image">
+                <img src="../images/schoolLogo.jpg" alt="Teacher illustration" width="100px" height="100px" border-radius="50px">
+            </div>
+            <div class="purple-circle"></div>
+        </div>
+        
+        <div class="right-section">
+            <div class="right-section-inner">
+                
+                <h1 class="login-heading">Teacher Login <span class="teacher-badge">Faculty</span></h1>
+                <p class="login-subheading">Access your classroom, grades, and teaching resources</p>
+                
+                <form>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" placeholder="Enter your faculty email address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="password-input-container">
+                            <input type="password" class="form-input" placeholder="Enter your password">
+                            <span class="password-icon">👁️</span>
+                        </div>
+                    </div>
+                    
+                    <div class="forgot-password">
+                        <a href="#">Forgot password?</a>
+                    </div>
+                    
+                    <button type="button" class="login-button">Log in to Teacher Portal</button>
+                    
+                    <div class="teacher-features">
+                        <h3>Teacher Portal Features:</h3>
+                        <div class="feature-list">
+                            <div class="feature-item">
+                                <div class="feature-icon">📊</div>
+                                <span>Gradebook</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">📝</div>
+                                <span>Lesson Plans</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">📅</div>
+                                <span>Schedule</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="create-account">
+                        Need a faculty account? <a href="teacher-signup.html">Contact admin</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

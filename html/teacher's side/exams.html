@@ -279,7 +279,7 @@
             border-collapse: collapse;
         }
 
-        .exam-table th, 
+        .exam-table th,
         .exam-table td {
             padding: 15px;
             text-align: left;
@@ -921,6 +921,129 @@
             margin-left: 10px;
             display: inline-block;
         }
+
+        /* Add these to your existing style section */
+
+        /* Bloom's Taxonomy Labels */
+        .bloom-label {
+            display: inline-block;
+            border-radius: 15px;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            margin-left: 8px;
+        }
+
+        .bloom-remember {
+            background-color: #f97316;
+            /* Orange */
+        }
+
+        .bloom-understand {
+            background-color: #eab308;
+            /* Amber */
+        }
+
+        .bloom-apply {
+            background-color: #22c55e;
+            /* Green */
+        }
+
+        .bloom-analyze {
+            background-color: #3b82f6;
+            /* Blue */
+        }
+
+        .bloom-evaluate {
+            background-color: #8b5cf6;
+            /* Purple */
+        }
+
+        .bloom-create {
+            background-color: #ec4899;
+            /* Pink */
+        }
+
+        /* Bloom's icon for the table */
+        .bloom-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* Bloom's taxonomy selector in form */
+        .bloom-selector {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .bloom-option {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .bloom-option:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .bloom-option.selected {
+            box-shadow: 0 0 0 2px white, 0 0 0 4px currentColor;
+        }
+
+        /* Bloom's distribution chart container */
+        .bloom-distribution {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .bloom-chart-title {
+            font-weight: bold;
+            color: #4b5563;
+            margin-bottom: 10px;
+        }
+
+        .bloom-bars {
+            display: flex;
+            align-items: flex-end;
+            height: 140px;
+            gap: 15px;
+        }
+
+        .bloom-bar-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bloom-bar {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s;
+        }
+
+        .bloom-bar-label {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #4b5563;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -933,12 +1056,12 @@
             </div>
         </div>
 
-        <div class="user-avatar" title="Teacher Account">T</div>
+        <div class="user-avatar" title="Teacher Account">S</div>
     </div>
 
     <div class="container">
         <div class="menu-buttons">
-            <div class="menu-button">
+            <div class="menu-button" onclick="location.href='landing.html'">
                 <div class="menu-icon">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
@@ -947,7 +1070,7 @@
                 <div class="menu-text">Dashboard</div>
             </div>
 
-            <div class="menu-button">
+            <div class="menu-button" onclick="location.href='classes.html'">
                 <div class="menu-icon">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"></path>
@@ -956,7 +1079,7 @@
                 <div class="menu-text">Classes</div>
             </div>
 
-            <div class="menu-button">
+            <div class="menu-button" location.href="calendar.html">
                 <div class="menu-icon">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
                         <path
@@ -978,7 +1101,7 @@
                 <div class="menu-text"> Exams </div>
             </div>
 
-            <div class="menu-button" onclick="location.href='students.html'">
+            <div class="menu-button" onclick="location.href='student.html'">
                 <div class="menu-icon">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
                         <path
@@ -1001,699 +1124,827 @@
             </div>
         </div>
 
-    <h1 class="page-title">Manage Exams</h1>
+        <h1 class="page-title">Manage Exams</h1>
 
-    <div class="stats-container">
-        <div class="stat-card">
-            <div class="stat-icon blue">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z">
-                    </path>
-                </svg>
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="stat-data">
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Total Exams</div>
+                </div>
             </div>
-            <div class="stat-data">
-                <div class="stat-value">24</div>
-                <div class="stat-label">Total Exams</div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="stat-data">
+                    <div class="stat-value">18</div>
+                    <div class="stat-label">Completed Exams</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon yellow">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="stat-data">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Scheduled Exams</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon red">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="stat-data">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Active Now</div>
+                </div>
             </div>
         </div>
 
-        <div class="stat-card">
-            <div class="stat-icon green">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z">
-                    </path>
-                </svg>
-            </div>
-            <div class="stat-data">
-                <div class="stat-value">18</div>
-                <div class="stat-label">Completed Exams</div>
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-icon yellow">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z">
-                    </path>
-                </svg>
-            </div>
-            <div class="stat-data">
-                <div class="stat-value">4</div>
-                <div class="stat-label">Scheduled Exams</div>
-            </div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-icon red">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z">
-                    </path>
-                </svg>
-            </div>
-            <div class="stat-data">
-                <div class="stat-value">2</div>
-                <div class="stat-label">Active Now</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="teacher-tools">
-        <div class="search-box">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#64748b">
-                <path
-                    d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
-                </path>
-            </svg>
-            <input type="text" placeholder="Search exams...">
-        </div>
-
-        <div class="action-buttons">
-            <button class="action-button create" onclick="showModal('addExamModal')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                </svg>
-                Create Exam
-            </button>
-            <button class="action-button">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z">
-                    </path>
-                </svg>
-                Refresh
-            </button>
-        </div>
-    </div>
-
-    <div class="filter-section">
-        <div class="filter-dropdown">
-            <button class="filter-button">
-                All Grades
+        <div class="teacher-tools">
+            <div class="search-box">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="#64748b">
-                    <path d="M7 10l5 5 5-5z"></path>
+                    <path
+                        d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+                    </path>
                 </svg>
-            </button>
-            <div class="filter-menu">
-                <div class="filter-item">All Grades</div>
-                <div class="filter-item">Grade 4</div>
-                <div class="filter-item">Grade 5</div>
-                <div class="filter-item">Grade 6</div>
+                <input type="text" placeholder="Search exams...">
             </div>
-        </div>
 
-        <div class="filter-dropdown">
-            <button class="filter-button">
-                All Subjects
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="#64748b">
-                    <path d="M7 10l5 5 5-5z"></path>
-                </svg>
-            </button>
-            <div class="filter-menu">
-                <div class="filter-item">All Subjects</div>
-                <div class="filter-item">English</div>
-                <div class="filter-item">Math</div>
-                <div class="filter-item">Science</div>
-                <div class="filter-item">Filipino</div>
-                <div class="filter-item">MAPEH</div>
-                <div class="filter-item">History</div>
-            </div>
-        </div>
-
-        <div class="filter-dropdown">
-            <button class="filter-button">
-                All Status
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="#64748b">
-                    <path d="M7 10l5 5 5-5z"></path>
-                </svg>
-            </button>
-            <div class="filter-menu">
-                <div class="filter-item">All Status</div>
-                <div class="filter-item">Draft</div>
-                <div class="filter-item">Scheduled</div>
-                <div class="filter-item">Active</div>
-                <div class="filter-item">Grading</div>
-                <div class="filter-item">Completed</div>
-            </div>
-        </div>
-
-        <div class="filter-dropdown">
-            <button class="filter-button">
-                All Time
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="#64748b">
-                    <path d="M7 10l5 5 5-5z"></path>
-                </svg>
-            </button>
-            <div class="filter-menu">
-                <div class="filter-item">All Time</div>
-                <div class="filter-item">This Week</div>
-                <div class="filter-item">This Month</div>
-                <div class="filter-item">Last Month</div>
-                <div class="filter-item">This Quarter</div>
-                <div class="filter-item">This Year</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="tabs">
-        <div class="tab active">All Exams</div>
-        <div class="tab">Draft</div>
-        <div class="tab">Scheduled</div>
-        <div class="tab">Active</div>
-        <div class="tab">Grading</div>
-        <div class="tab">Completed</div>
-    </div>
-
-    <div class="exams-container">
-        <table class="exam-table">
-            <thead>
-                <tr>
-                    <th>Exam Title</th>
-                    <th>Grade & Section</th>
-                    <th>Subject</th>
-                    <th>Schedule</th>
-                    <th>Status</th>
-                    <th class="action-column">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <a href="#" class="exam-title">First Quarter Exam - Math</a>
-                        <div class="exam-description">Covering lessons 1-5: Numbers, Fractions, and Basic Operations</div>
-                    </td>
-                    <td>Grade 5 - Einstein</td>
-                    <td>
-                        <span class="subject-label math">Math</span>
-                    </td>
-                    <td>April 12, 2025</td>
-                    <td>
-                        <span class="status-label status-scheduled">Scheduled</span>
-                    </td>
-                    <td>
-                        <div class="row-actions">
-                            <span class="row-action">Edit</span> 
-                            <span class="row-action">View</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="exam-title">Science Diagnostic Test</a>
-                        <div class="exam-description">Pre-assessment for the new quarter</div>
-                    </td>
-                    <td>Grade 4 - Curie</td>
-                    <td>
-                        <span class="subject-label science">Science</span>
-                    </td>
-                    <td>April 10, 2025 <span class="due-soon">Due Soon</span></td>
-                    <td>
-                        <span class="status-label status-scheduled">Scheduled</span>
-                    </td>
-                    <td>
-                        <div class="row-actions">
-                            <span class="row-action">Edit</span> 
-                            <span class="row-action">View</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="exam-title">English Vocabulary Quiz</a>
-                        <div class="exam-description">Weekly vocabulary assessment</div>
-                    </td>
-                    <td>Grade 4 - Curie</td>
-                    <td>
-                        <span class="subject-label english">English</span>
-                    </td>
-                    <td>In progress</td>
-                    <td>
-                        <span class="status-label status-active">Active</span>
-                    </td>
-                    <td>
-                        <div class="row-actions">
-                            <span class="row-action">Monitor</span>
-                            <span class="row-action">End</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="exam-title">Filipino Literature Quiz</a>
-                        <div class="exam-description">Core assessment on Filipino classics</div>
-                    </td>
-                    <td>Grade 6 - Rizal</td>
-                    <td>
-                        <span class="subject-label filipino">Filipino</span>
-                    </td>
-                    <td>In progress</td>
-                    <td>
-                        <span class="status-label status-active">Active</span>
-                    </td>
-                    <td>
-                        <div class="row-actions">
-                            <span class="row-action">Monitor</span> 
-                            <span class="row-action">End</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="exam-title">MAPEH Monthly Assessment</a>
-                        <div class="exam-description">Music, Arts, Physical Education & Health combined test</div>
-                    </td>
-                    <td>Grade 5 - Einstein</td>
-                    <td>
-                        <span class="subject-label mapeh">MAPEH</span>
-                    </td>
-                    <td>April 5, 2025</td>
-                    <td>
-                        <span class="status-label status-grading">Grading</span>
-                    </td>
-                    <td>
-                        <div class="row-actions">
-                            <span class="row-action">Grade</span> 
-                            <span class="row-action">View</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="exam-title">History Final Exam</a>
-                        <div class="exam-description">Comprehensive assessment of Philippine History</div>
-                    </td>
-                    <td>Grade 5 - Einstein</td>
-                    <td>
-                        <span class="subject-label history">History</span>
-                    </td>
-                    <td>March 28, 2025</td>
-                    <td>
-                        <span class="status-label status-completed">Completed</span>
-                    </td>
-                    <td>
-                        <div class="row-actions">
-                            <span class="row-action">Results</span> 
-                            <span class="row-action">Reuse</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="#" class="exam-title">Science Project Assessment</a>
-                        <div class="exam-description">Evaluation for group science projects</div>
-                    </td>
-                    <td>Grade 4 - Curie</td>
-                    <td>
-                        <span class="subject-label science">Science</span>
-                    </td>
-                    <td>--</td>
-                    <td>
-                        <span class="status-label status-draft">Draft</span>
-                    </td>
-                    <td>
-                        <div class="row-actions">
-                            <span class="row-action">Edit</span> 
-                            <span class="row-action">Delete</span>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="pagination">
-            <div class="pagination-text">Showing 1-7 of 24 exams</div>
-            <div class="pagination-buttons">
-                <div class="pagination-button">
+            <div class="action-buttons">
+                <button class="action-button create" onclick="showModal('addExamModal')">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                     </svg>
-                </div>
-                <div class="pagination-button active">1</div>
-                <div class="pagination-button">2</div>
-                <div class="pagination-button">3</div>
-                <div class="pagination-button">4</div>
-                <div class="pagination-button">
+                    Create Exam
+                </button>
+                <button class="action-button">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"></path>
+                        <path
+                            d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z">
+                        </path>
                     </svg>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Add Exam Modal -->
-<div class="modal-background" id="addExamModal">
-    <div class="modal">
-        <div class="modal-close" onclick="hideModal('addExamModal')">×</div>
-        <h2 class="modal-title">Create New Exam</h2>
-
-        <div class="form-row">
-            <div class="form-col">
-                <div class="form-group">
-                    <label for="examTitle">Exam Title</label>
-                    <input type="text" id="examTitle" placeholder="Enter a descriptive title">
-                </div>
-            </div>
-            <div class="form-col">
-                <div class="form-group">
-                    <label for="examSubject">Subject</label>
-                    <select id="examSubject">
-                        <option value="">Select a subject</option>
-                        <option value="english">English</option>
-                        <option value="math">Math</option>
-                        <option value="science">Science</option>
-                        <option value="filipino">Filipino</option>
-                        <option value="mapeh">MAPEH</option>
-                        <option value="history">History</option>
-                    </select>
-                </div>
+                    Refresh
+                </button>
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="examDescription">Description</label>
-            <textarea id="examDescription" placeholder="Describe what this exam covers"></textarea>
-        </div>
-
-        <div class="class-selector">
-            <div class="class-option">Grade 4 - Curie</div>
-            <div class="class-option">Grade 5 - Einstein</div>
-            <div class="class-option">Grade 6 - Rizal</div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-col">
-                <div class="form-group">
-                    <label for="examDate">Exam Date</label>
-                    <input type="date" id="examDate">
-                </div>
-            </div>
-            <div class="form-col">
-                <div class="form-group">
-                    <label for="examTime">Start Time</label>
-                    <input type="time" id="examTime">
-                </div>
-            </div>
-            <div class="form-col">
-                <div class="form-group">
-                    <label for="examDuration">Duration</label>
-                    <input type="number" id="examDuration" placeholder="Minutes" min="1">
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Questions</label>
-            <div class="file-upload">
-                <div class="file-upload-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M5 20h14v-2H5v2zm0-10h4v6h6v-6h4l-7-7-7 7z"></path>
+        <div class="filter-section">
+            <div class="filter-dropdown">
+                <button class="filter-button">
+                    All Grades
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#64748b">
+                        <path d="M7 10l5 5 5-5z"></path>
                     </svg>
+                </button>
+                <div class="filter-menu">
+                    <div class="filter-item">All Grades</div>
+                    <div class="filter-item">Grade 4</div>
+                    <div class="filter-item">Grade 5</div>
+                    <div class="filter-item">Grade 6</div>
                 </div>
-                <div class="file-upload-text">Drag & drop files or click to upload</div>
-                <div class="file-upload-hint">PDF, DOCX, or use our question builder below</div>
+            </div>
+
+            <div class="filter-dropdown">
+                <button class="filter-button">
+                    All Subjects
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#64748b">
+                        <path d="M7 10l5 5 5-5z"></path>
+                    </svg>
+                </button>
+                <div class="filter-menu">
+                    <div class="filter-item">All Subjects</div>
+                    <div class="filter-item">English</div>
+                    <div class="filter-item">Math</div>
+                    <div class="filter-item">Science</div>
+                    <div class="filter-item">Filipino</div>
+                    <div class="filter-item">MAPEH</div>
+                    <div class="filter-item">History</div>
+                </div>
+            </div>
+
+            <div class="filter-dropdown">
+                <button class="filter-button">
+                    All Status
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#64748b">
+                        <path d="M7 10l5 5 5-5z"></path>
+                    </svg>
+                </button>
+                <div class="filter-menu">
+                    <div class="filter-item">All Status</div>
+                    <div class="filter-item">Draft</div>
+                    <div class="filter-item">Scheduled</div>
+                    <div class="filter-item">Active</div>
+                    <div class="filter-item">Grading</div>
+                    <div class="filter-item">Completed</div>
+                </div>
+            </div>
+
+            <div class="filter-dropdown">
+                <button class="filter-button">
+                    All Time
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#64748b">
+                        <path d="M7 10l5 5 5-5z"></path>
+                    </svg>
+                </button>
+                <div class="filter-menu">
+                    <div class="filter-item">All Time</div>
+                    <div class="filter-item">This Week</div>
+                    <div class="filter-item">This Month</div>
+                    <div class="filter-item">Last Month</div>
+                    <div class="filter-item">This Quarter</div>
+                    <div class="filter-item">This Year</div>
+                </div>
             </div>
         </div>
 
-        <div class="question-builder">
-            <div class="question-tabs">
-                <div class="question-tab active">Multiple Choice</div>
-                <div class="question-tab">True/False</div>
-                <div class="question-tab">Short Answer</div>
-                <div class="question-tab">Essay</div>
-                <div class="question-tab">Matching</div>
-            </div>
+        <div class="tabs">
+            <div class="tab active">All Exams</div>
+            <div class="tab">Draft</div>
+            <div class="tab">Scheduled</div>
+            <div class="tab">Active</div>
+            <div class="tab">Grading</div>
+            <div class="tab">Completed</div>
+        </div>
 
-            <div class="question-container">
-                <div class="form-group">
-                    <label for="questionText">Question</label>
-                    <textarea id="questionText" placeholder="Enter your question here"></textarea>
-                </div>
+        <div class="exams-container">
+            <table class="exam-table">
+                <thead>
+                    <tr>
+                        <th>Exam Title</th>
+                        <th>Grade & Section</th>
+                        <th>Subject</th>
+                        <th>Schedule</th>
+                        <th>Status</th>
+                        <th class="action-column">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <a href="#" class="exam-title">First Quarter Exam - Math</a>
+                            <div class="exam-description">Covering lessons 1-5: Numbers, Fractions, and Basic Operations
+                            </div>
+                        </td>
+                        <td>Grade 5 - Einstein</td>
+                        <td>
+                            <span class="subject-label math">Math</span>
+                        </td>
+                        <td>April 12, 2025</td>
+                        <td>
+                            <span class="status-label status-scheduled">Scheduled</span>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <span class="row-action">Edit</span>
+                                <span class="row-action">View</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="#" class="exam-title">Science Diagnostic Test</a>
+                            <div class="exam-description">Pre-assessment for the new quarter</div>
+                        </td>
+                        <td>Grade 4 - Curie</td>
+                        <td>
+                            <span class="subject-label science">Science</span>
+                        </td>
+                        <td>April 10, 2025 <span class="due-soon">Due Soon</span></td>
+                        <td>
+                            <span class="status-label status-scheduled">Scheduled</span>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <span class="row-action">Edit</span>
+                                <span class="row-action">View</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="#" class="exam-title">English Vocabulary Quiz</a>
+                            <div class="exam-description">Weekly vocabulary assessment</div>
+                        </td>
+                        <td>Grade 4 - Curie</td>
+                        <td>
+                            <span class="subject-label english">English</span>
+                        </td>
+                        <td>In progress</td>
+                        <td>
+                            <span class="status-label status-active">Active</span>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <span class="row-action">Monitor</span>
+                                <span class="row-action">End</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="#" class="exam-title">Filipino Literature Quiz</a>
+                            <div class="exam-description">Core assessment on Filipino classics</div>
+                        </td>
+                        <td>Grade 6 - Rizal</td>
+                        <td>
+                            <span class="subject-label filipino">Filipino</span>
+                        </td>
+                        <td>In progress</td>
+                        <td>
+                            <span class="status-label status-active">Active</span>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <span class="row-action">Monitor</span>
+                                <span class="row-action">End</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="#" class="exam-title">MAPEH Monthly Assessment</a>
+                            <div class="exam-description">Music, Arts, Physical Education & Health combined test</div>
+                        </td>
+                        <td>Grade 5 - Einstein</td>
+                        <td>
+                            <span class="subject-label mapeh">MAPEH</span>
+                        </td>
+                        <td>April 5, 2025</td>
+                        <td>
+                            <span class="status-label status-grading">Grading</span>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <span class="row-action">Grade</span>
+                                <span class="row-action">View</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="#" class="exam-title">History Final Exam</a>
+                            <div class="exam-description">Comprehensive assessment of Philippine History</div>
+                        </td>
+                        <td>Grade 5 - Einstein</td>
+                        <td>
+                            <span class="subject-label history">History</span>
+                        </td>
+                        <td>March 28, 2025</td>
+                        <td>
+                            <span class="status-label status-completed">Completed</span>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <span class="row-action">Results</span>
+                                <span class="row-action">Reuse</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="#" class="exam-title">Science Project Assessment</a>
+                            <div class="exam-description">Evaluation for group science projects</div>
+                        </td>
+                        <td>Grade 4 - Curie</td>
+                        <td>
+                            <span class="subject-label science">Science</span>
+                        </td>
+                        <td>--</td>
+                        <td>
+                            <span class="status-label status-draft">Draft</span>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <span class="row-action">Edit</span>
+                                <span class="row-action">Delete</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="#" class="exam-title">First Quarter Exam - Math</a>
+                            <div class="exam-description">Covering lessons 1-5: Numbers, Fractions, and Basic Operations
+                            </div>
+                            <div class="bloom-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="#6b7280">
+                                    <path
+                                        d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z">
+                                    </path>
+                                </svg>
+                                Bloom's: <span class="bloom-label bloom-apply">Apply</span>
+                                <span class="bloom-label bloom-analyze">Analyze</span>
+                            </div>
+                        </td>
+                        <td>Grade 5 - Einstein</td>
+                        <td>
+                            <span class="subject-label math">Math</span>
+                        </td>
+                        <td>April 12, 2025</td>
+                        <td>
+                            <span class="status-label status-scheduled">Scheduled</span>
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <span class="row-action">Edit</span>
+                                <span class="row-action">View</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-                <div class="points-row">
-                    <div class="form-group">
-                        <label for="questionPoints">Points</label>
-                        <input type="number" id="questionPoints" class="points-input" value="1" min="1">
-                    </div>
-                </div>
-
-                <div class="multiple-choice-options">
-                    <div class="option-row">
-                        <input type="radio" name="correctOption" class="option-correct">
-                        <input type="text" class="option-input" placeholder="Option 1">
-                        <div class="option-remove">×</div>
-                    </div>
-                    <div class="option-row">
-                        <input type="radio" name="correctOption" class="option-correct">
-                        <input type="text" class="option-input" placeholder="Option 2">
-                        <div class="option-remove">×</div>
-                    </div>
-                    <div class="option-row">
-                        <input type="radio" name="correctOption" class="option-correct">
-                        <input type="text" class="option-input" placeholder="Option 3">
-                        <div class="option-remove">×</div>
-                    </div>
-                    <div class="option-row">
-                        <input type="radio" name="correctOption" class="option-correct">
-                        <input type="text" class="option-input" placeholder="Option 4">
-                        <div class="option-remove">×</div>
-                    </div>
-
-                    <div class="add-option-button">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 5px;">
-                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+            <div class="pagination">
+                <div class="pagination-text">Showing 1-7 of 24 exams</div>
+                <div class="pagination-buttons">
+                    <div class="pagination-button">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
                         </svg>
-                        Add Option
+                    </div>
+                    <div class="pagination-button active">1</div>
+                    <div class="pagination-button">2</div>
+                    <div class="pagination-button">3</div>
+                    <div class="pagination-button">4</div>
+                    <div class="pagination-button">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"></path>
+                        </svg>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="exam-settings">
-            <div class="settings-title">Exam Settings</div>
-
-            <div class="settings-row">
-                <input type="checkbox" id="randomizeQuestions" class="settings-switch">
-                <div>
-                    <label for="randomizeQuestions" class="settings-label">Randomize question order</label>
-                    <div class="settings-description">Questions will appear in random order for each student</div>
-                </div>
-            </div>
-
-            <div class="settings-row">
-                <input type="checkbox" id="showResults" class="settings-switch">
-                <div>
-                    <label for="showResults" class="settings-label">Show results immediately after submission</label>
-                    <div class="settings-description">Students will see their score after submitting</div>
-                </div>
-            </div>
-
-            <div class="settings-row">
-                <input type="checkbox" id="limitTime" class="settings-switch">
-                <div>
-                    <label for="limitTime" class="settings-label">Enforce time limit</label>
-                    <div class="settings-description">Exam will automatically submit when time expires</div>
-                </div>
-            </div>
-
-            <div class="settings-row">
-                <input type="checkbox" id="allowRetake" class="settings-switch">
-                <div>
-                    <label for="allowRetake" class="settings-label">Allow retakes</label>
-                    <div class="settings-description">Students can retake the exam if they don't pass</div>
-                    <div class="timer-settings">
-                        <span>Maximum attempts:</span>
-                        <input type="number" class="timer-input" value="1" min="1">
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-row">
-                <input type="checkbox" id="requirePassword" class="settings-switch">
-                <div>
-                    <label for="requirePassword" class="settings-label">Require exam password</label>
-                    <div class="settings-description">Students will need a password to access the exam</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal-buttons">
-            <button class="modal-button draft">Save as Draft</button>
-            <button class="modal-button cancel" onclick="hideModal('addExamModal')">Cancel</button>
-            <button class="modal-button submit">Save & Schedule</button>
         </div>
     </div>
-</div>
 
-<div class="help-button">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v8z"></path>
-    </svg>
-</div>
+    <!-- Add Exam Modal -->
+    <div class="modal-background" id="addExamModal">
+        <div class="modal">
+            <div class="modal-close" onclick="hideModal('addExamModal')">×</div>
+            <h2 class="modal-title">Create New Exam</h2>
 
-<script>
-    // Show modal function
-    function showModal(modalId) {
-        document.getElementById(modalId).style.display = 'flex';
-    }
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="examTitle">Exam Title</label>
+                        <input type="text" id="examTitle" placeholder="Enter a descriptive title">
+                    </div>
+                </div>
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="examSubject">Subject</label>
+                        <select id="examSubject">
+                            <option value="">Select a subject</option>
+                            <option value="english">English</option>
+                            <option value="math">Math</option>
+                            <option value="science">Science</option>
+                            <option value="filipino">Filipino</option>
+                            <option value="mapeh">MAPEH</option>
+                            <option value="history">History</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-    // Hide modal function
-    function hideModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
+            <div class="form-group">
+                <label for="examDescription">Description</label>
+                <textarea id="examDescription" placeholder="Describe what this exam covers"></textarea>
+            </div>
 
-    // Initialize dropdown functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        // Toggle dropdown menus
-        const filterButtons = document.querySelectorAll('.filter-button');
-        filterButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const menu = this.nextElementSibling;
-                const isVisible = menu.style.display === 'block';
-                
-                // Hide all menus first
-                document.querySelectorAll('.filter-menu').forEach(m => {
-                    m.style.display = 'none';
+            <div class="class-selector">
+                <div class="class-option">Grade 4 - Curie</div>
+                <div class="class-option">Grade 5 - Einstein</div>
+                <div class="class-option">Grade 6 - Rizal</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="examDate">Exam Date</label>
+                        <input type="date" id="examDate">
+                    </div>
+                </div>
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="examTime">Start Time</label>
+                        <input type="time" id="examTime">
+                    </div>
+                </div>
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="examDuration">Duration</label>
+                        <input type="number" id="examDuration" placeholder="Minutes" min="1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Questions</label>
+                <div class="file-upload">
+                    <div class="file-upload-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M5 20h14v-2H5v2zm0-10h4v6h6v-6h4l-7-7-7 7z"></path>
+                        </svg>
+                    </div>
+                    <div class="file-upload-text">Drag & drop files or click to upload</div>
+                    <div class="file-upload-hint">PDF, DOCX, or use our question builder below</div>
+                </div>
+            </div>
+
+            <div class="question-builder">
+                <div class="question-tabs">
+                    <div class="question-tab active">Multiple Choice</div>
+                    <div class="question-tab">True/False</div>
+                    <div class="question-tab">Short Answer</div>
+                    <div class="question-tab">Essay</div>
+                    <div class="question-tab">Matching</div>
+                </div>
+
+                <div class="question-container">
+                    <div class="form-group">
+                        <label for="questionText">Question</label>
+                        <textarea id="questionText" placeholder="Enter your question here"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Bloom's Taxonomy Level</label>
+                        <div class="bloom-selector">
+                            <div class="bloom-option bloom-remember" onclick="selectBloomLevel(this, 'remember')">
+                                Remember</div>
+                            <div class="bloom-option bloom-understand" onclick="selectBloomLevel(this, 'understand')">
+                                Understand</div>
+                            <div class="bloom-option bloom-apply selected" onclick="selectBloomLevel(this, 'apply')">
+                                Apply</div>
+                            <div class="bloom-option bloom-analyze" onclick="selectBloomLevel(this, 'analyze')">Analyze
+                            </div>
+                            <div class="bloom-option bloom-evaluate" onclick="selectBloomLevel(this, 'evaluate')">
+                                Evaluate</div>
+                            <div class="bloom-option bloom-create" onclick="selectBloomLevel(this, 'create')">Create
+                            </div>
+                        </div>
+                        <input type="hidden" id="bloomTaxonomyLevel" value="apply">
+                    </div>
+
+                    <div class="points-row">
+                        <div class="form-group">
+                            <label for="questionPoints">Points</label>
+                            <input type="number" id="questionPoints" class="points-input" value="1" min="1">
+                        </div>
+                    </div>
+
+                    <div class="multiple-choice-options">
+                        <div class="option-row">
+                            <input type="radio" name="correctOption" class="option-correct">
+                            <input type="text" class="option-input" placeholder="Option 1">
+                            <div class="option-remove">×</div>
+                        </div>
+                        <div class="option-row">
+                            <input type="radio" name="correctOption" class="option-correct">
+                            <input type="text" class="option-input" placeholder="Option 2">
+                            <div class="option-remove">×</div>
+                        </div>
+                        <div class="option-row">
+                            <input type="radio" name="correctOption" class="option-correct">
+                            <input type="text" class="option-input" placeholder="Option 3">
+                            <div class="option-remove">×</div>
+                        </div>
+                        <div class="option-row">
+                            <input type="radio" name="correctOption" class="option-correct">
+                            <input type="text" class="option-input" placeholder="Option 4">
+                            <div class="option-remove">×</div>
+                        </div>
+
+
+                        <div class="add-option-button">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
+                                style="margin-right: 5px;">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                            </svg>
+                            Add Option
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bloom-distribution">
+                <div class="bloom-chart-title">Bloom's Taxonomy Distribution</div>
+                <div class="bloom-bars">
+                    <div class="bloom-bar-container">
+                        <div class="bloom-bar bloom-remember" style="height: 20%;"></div>
+                        <div class="bloom-bar-label">Remember<br>20%</div>
+                    </div>
+                    <div class="bloom-bar-container">
+                        <div class="bloom-bar bloom-understand" style="height: 30%;"></div>
+                        <div class="bloom-bar-label">Understand<br>30%</div>
+                    </div>
+                    <div class="bloom-bar-container">
+                        <div class="bloom-bar bloom-apply" style="height: 25%;"></div>
+                        <div class="bloom-bar-label">Apply<br>25%</div>
+                    </div>
+                    <div class="bloom-bar-container">
+                        <div class="bloom-bar bloom-analyze" style="height: 15%;"></div>
+                        <div class="bloom-bar-label">Analyze<br>15%</div>
+                    </div>
+                    <div class="bloom-bar-container">
+                        <div class="bloom-bar bloom-evaluate" style="height: 5%;"></div>
+                        <div class="bloom-bar-label">Evaluate<br>5%</div>
+                    </div>
+                    <div class="bloom-bar-container">
+                        <div class="bloom-bar bloom-create" style="height: 5%;"></div>
+                        <div class="bloom-bar-label">Create<br>5%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exam-settings">
+                <div class="settings-title">Exam Settings</div>
+
+                <div class="settings-row">
+                    <input type="checkbox" id="randomizeQuestions" class="settings-switch">
+                    <div>
+                        <label for="randomizeQuestions" class="settings-label">Randomize question order</label>
+                        <div class="settings-description">Questions will appear in random order for each student</div>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <input type="checkbox" id="showResults" class="settings-switch">
+                    <div>
+                        <label for="showResults" class="settings-label">Show results immediately after
+                            submission</label>
+                        <div class="settings-description">Students will see their score after submitting</div>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <input type="checkbox" id="limitTime" class="settings-switch">
+                    <div>
+                        <label for="limitTime" class="settings-label">Enforce time limit</label>
+                        <div class="settings-description">Exam will automatically submit when time expires</div>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <input type="checkbox" id="allowRetake" class="settings-switch">
+                    <div>
+                        <label for="allowRetake" class="settings-label">Allow retakes</label>
+                        <div class="settings-description">Students can retake the exam if they don't pass</div>
+                        <div class="timer-settings">
+                            <span>Maximum attempts:</span>
+                            <input type="number" class="timer-input" value="1" min="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <input type="checkbox" id="requirePassword" class="settings-switch">
+                    <div>
+                        <label for="requirePassword" class="settings-label">Require exam password</label>
+                        <div class="settings-description">Students will need a password to access the exam</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="modal-button draft">Save as Draft</button>
+                <button class="modal-button cancel" onclick="hideModal('addExamModal')">Cancel</button>
+                <button class="modal-button submit">Save & Schedule</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="help-button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v8z">
+            </path>
+        </svg>
+    </div>
+
+    <script>
+        // Show modal function
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        // Hide modal function
+        function hideModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Initialize dropdown functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            // Toggle dropdown menus
+            const filterButtons = document.querySelectorAll('.filter-button');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const menu = this.nextElementSibling;
+                    const isVisible = menu.style.display === 'block';
+
+                    // Hide all menus first
+                    document.querySelectorAll('.filter-menu').forEach(m => {
+                        m.style.display = 'none';
+                    });
+
+                    // Toggle this menu
+                    menu.style.display = isVisible ? 'none' : 'block';
                 });
-                
-                // Toggle this menu
-                menu.style.display = isVisible ? 'none' : 'block';
             });
-        });
 
-        // Handle filter item selection
-        const filterItems = document.querySelectorAll('.filter-item');
-        filterItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const dropdown = this.closest('.filter-dropdown');
-                const buttonText = dropdown.querySelector('.filter-button');
-                buttonText.textContent = this.textContent;
-                
-                // Add arrow icon back
-                const arrowIcon = document.createElement('svg');
-                arrowIcon.setAttribute('width', '20');
-                arrowIcon.setAttribute('height', '20');
-                arrowIcon.setAttribute('viewBox', '0 0 24 24');
-                arrowIcon.setAttribute('fill', '#64748b');
-                arrowIcon.innerHTML = '<path d="M7 10l5 5 5-5z"></path>';
-                buttonText.appendChild(arrowIcon);
-                
-                // Hide the menu
-                this.closest('.filter-menu').style.display = 'none';
-            });
-        });
+            // Handle filter item selection
+            const filterItems = document.querySelectorAll('.filter-item');
+            filterItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    const dropdown = this.closest('.filter-dropdown');
+                    const buttonText = dropdown.querySelector('.filter-button');
+                    buttonText.textContent = this.textContent;
 
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.filter-dropdown')) {
-                document.querySelectorAll('.filter-menu').forEach(menu => {
-                    menu.style.display = 'none';
+                    // Add arrow icon back
+                    const arrowIcon = document.createElement('svg');
+                    arrowIcon.setAttribute('width', '20');
+                    arrowIcon.setAttribute('height', '20');
+                    arrowIcon.setAttribute('viewBox', '0 0 24 24');
+                    arrowIcon.setAttribute('fill', '#64748b');
+                    arrowIcon.innerHTML = '<path d="M7 10l5 5 5-5z"></path>';
+                    buttonText.appendChild(arrowIcon);
+
+                    // Hide the menu
+                    this.closest('.filter-menu').style.display = 'none';
                 });
-            }
-        });
-
-        // Tab functionality
-        const tabs = document.querySelectorAll('.tab');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                // Remove active class from all tabs
-                tabs.forEach(t => t.classList.remove('active'));
-                
-                // Add active class to clicked tab
-                this.classList.add('active');
             });
-        });
 
-        // Question type tabs functionality
-        const questionTabs = document.querySelectorAll('.question-tab');
-        questionTabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                // Remove active class from all tabs
-                questionTabs.forEach(t => t.classList.remove('active'));
-                
-                // Add active class to clicked tab
-                this.classList.add('active');
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!event.target.closest('.filter-dropdown')) {
+                    document.querySelectorAll('.filter-menu').forEach(menu => {
+                        menu.style.display = 'none';
+                    });
+                }
             });
-        });
 
-        // Class selector functionality
-        const classOptions = document.querySelectorAll('.class-option');
-        classOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                // Remove active class from all options
-                classOptions.forEach(o => o.classList.remove('active'));
-                
-                // Add active class to clicked option
-                this.classList.add('active');
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                });
             });
-        });
 
-        // Add option button functionality
-        const addOptionButton = document.querySelector('.add-option-button');
-        if (addOptionButton) {
-            addOptionButton.addEventListener('click', function() {
-                const optionsContainer = document.querySelector('.multiple-choice-options');
-                const optionCount = optionsContainer.querySelectorAll('.option-row').length + 1;
-                
-                const newOptionRow = document.createElement('div');
-                newOptionRow.className = 'option-row';
-                newOptionRow.innerHTML = `
+            // Question type tabs functionality
+            const questionTabs = document.querySelectorAll('.question-tab');
+            questionTabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    // Remove active class from all tabs
+                    questionTabs.forEach(t => t.classList.remove('active'));
+
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                });
+            });
+
+            // Class selector functionality
+            const classOptions = document.querySelectorAll('.class-option');
+            classOptions.forEach(option => {
+                option.addEventListener('click', function () {
+                    // Remove active class from all options
+                    classOptions.forEach(o => o.classList.remove('active'));
+
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                });
+            });
+
+            // Add option button functionality
+            const addOptionButton = document.querySelector('.add-option-button');
+            if (addOptionButton) {
+                addOptionButton.addEventListener('click', function () {
+                    const optionsContainer = document.querySelector('.multiple-choice-options');
+                    const optionCount = optionsContainer.querySelectorAll('.option-row').length + 1;
+
+                    const newOptionRow = document.createElement('div');
+                    newOptionRow.className = 'option-row';
+                    newOptionRow.innerHTML = `
                     <input type="radio" name="correctOption" class="option-correct">
                     <input type="text" class="option-input" placeholder="Option ${optionCount}">
                     <div class="option-remove">×</div>
                 `;
-                
-                // Insert before the add option button
-                optionsContainer.insertBefore(newOptionRow, addOptionButton);
-                
-                // Add remove functionality to the new option row
-                const removeButton = newOptionRow.querySelector('.option-remove');
-                removeButton.addEventListener('click', function() {
-                    this.closest('.option-row').remove();
+
+                    // Insert before the add option button
+                    optionsContainer.insertBefore(newOptionRow, addOptionButton);
+
+                    // Add remove functionality to the new option row
+                    const removeButton = newOptionRow.querySelector('.option-remove');
+                    removeButton.addEventListener('click', function () {
+                        this.closest('.option-row').remove();
+                    });
                 });
+            }
+
+            // Add remove functionality to existing option rows
+            const removeButtons = document.querySelectorAll('.option-remove');
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Only remove if there are more than 2 options
+                    const optionsCount = document.querySelectorAll('.option-row').length;
+                    if (optionsCount > 2) {
+                        this.closest('.option-row').remove();
+                    } else {
+                        alert('You need at least 2 options for a multiple choice question.');
+                    }
+                });
+            });
+
+            // Pagination functionality
+            const paginationButtons = document.querySelectorAll('.pagination-button');
+            paginationButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Only apply to numbered buttons
+                    if (this.textContent.trim().match(/^[0-9]+$/)) {
+                        paginationButtons.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function (event) {
+            const modals = document.querySelectorAll('.modal-background');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+
+
+        // Handle Bloom's taxonomy level selection
+        function selectBloomLevel(element, level) {
+            // Remove selected class from all options
+            document.querySelectorAll('.bloom-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+
+            // Add selected class to clicked option
+            element.classList.add('selected');
+
+            // Update hidden input value
+            document.getElementById('bloomTaxonomyLevel').value = level;
+
+            // You could also update the bloom distribution chart here in a real application
+        }
+
+        // Function to update Bloom's taxonomy distribution based on added questions
+        function updateBloomDistribution() {
+            // In a real application, this would calculate percentages based on actual questions
+            // This is just a simple animation for demonstration
+            const bars = document.querySelectorAll('.bloom-bar');
+            bars.forEach(bar => {
+                const randomHeight = Math.floor(Math.random() * 80) + 10;
+                bar.style.height = randomHeight + '%';
+
+                // Update the label percentage
+                const label = bar.nextElementSibling;
+                const percentText = label.innerHTML.split('<br>')[0];
+                label.innerHTML = percentText + '<br>' + randomHeight + '%';
             });
         }
 
-        // Add remove functionality to existing option rows
-        const removeButtons = document.querySelectorAll('.option-remove');
-        removeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Only remove if there are more than 2 options
-                const optionsCount = document.querySelectorAll('.option-row').length;
-                if (optionsCount > 2) {
-                    this.closest('.option-row').remove();
-                } else {
-                    alert('You need at least 2 options for a multiple choice question.');
-                }
-            });
-        });
-
-        // Pagination functionality
-        const paginationButtons = document.querySelectorAll('.pagination-button');
-        paginationButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Only apply to numbered buttons
-                if (this.textContent.trim().match(/^[0-9]+$/)) {
-                    paginationButtons.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                }
-            });
-        });
-    });
-
-    // Close modal when clicking outside
-    window.addEventListener('click', function(event) {
-        const modals = document.querySelectorAll('.modal-background');
-        modals.forEach(modal => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
+        // Add event listener to update distribution when adding a question
+        document.addEventListener('DOMContentLoaded', function () {
+            const addQuestionBtn = document.querySelector('.modal-button.submit');
+            if (addQuestionBtn) {
+                addQuestionBtn.addEventListener('click', function () {
+                    updateBloomDistribution();
+                });
             }
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>
