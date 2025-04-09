@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Classroom - Sign Up</title>
-    <link rel="stylesheet" href="../css/signupStyle.css">
+    <title>My Classroom - Teacher Sign Up</title>
 </head>
 <style>
     body {
@@ -49,7 +48,7 @@
     }
 
     .signup-title {
-        color: #4285f4;
+        color: #34a853;
         text-align: center;
         font-size: 28px;
         margin-bottom: 30px;
@@ -78,39 +77,23 @@
 
     .form-group input:focus,
     .form-group select:focus {
-        border-color: #4285f4;
+        border-color: #34a853;
         outline: none;
     }
 
-    .role-selector {
+    .checkbox-group {
         display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
+        align-items: center;
+        margin-bottom: 15px;
     }
 
-    .role-option {
-        flex: 1;
-        text-align: center;
-        padding: 15px;
-        border: 2px solid #ddd;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .role-option.selected {
-        border-color: #4285f4;
-        background-color: #e8f0fe;
-    }
-
-    .role-option img {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 10px;
+    .checkbox-group input {
+        margin-right: 10px;
+        width: auto;
     }
 
     .submit-btn {
-        background-color: #4285f4;
+        background-color: #34a853;
         color: white;
         border: none;
         border-radius: 25px;
@@ -123,7 +106,7 @@
     }
 
     .submit-btn:hover {
-        background-color: #3367d6;
+        background-color: #2d8d46;
     }
 
     .login-link {
@@ -133,7 +116,7 @@
     }
 
     .login-link a {
-        color: #4285f4;
+        color: #34a853;
         text-decoration: none;
         font-weight: bold;
     }
@@ -156,20 +139,61 @@
         margin-top: 5px;
         display: none;
     }
+
+    .file-upload {
+        border: 2px dashed #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+    }
+
+    .file-upload:hover {
+        border-color: #34a853;
+        background-color: #f8f8f8;
+    }
+
+    .file-upload input[type="file"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .upload-icon {
+        font-size: 30px;
+        margin-bottom: 10px;
+        color: #34a853;
+    }
+
+    .upload-text {
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    .upload-hint {
+        font-size: 12px;
+        color: #888;
+    }
 </style>
 
 <body>
     <div class="main-content">
         <div class="signup-card">
-            <h1 class="signup-title">Join My Classroom</h1>
+            <h1 class="signup-title">Join My Classroom as a Teacher</h1>
 
             <div class="form-group">
-                <label for="fullname"> Student's Full Name</label>
-                <input type="text" id="student" placeholder="Student's full name">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" placeholder="Enter your full name">
             </div>
 
             <div class="form-group">
-                <label for="email"> Student's email address</label>
+                <label for="email">Email Address</label>
                 <input type="email" id="email" placeholder="Enter your email address">
             </div>
 
@@ -180,22 +204,53 @@
 
             <div class="form-group">
                 <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="password" placeholder="Confirm password">
+                <input type="password" id="confirm-password" placeholder="Confirm password">
             </div>
 
             <div class="form-group">
-                <label for="student-id">Student ID</label>
-                <input type="text" id="student-id" placeholder="2021134523">
+                <label for="teacher-id">Teacher ID</label>
+                <input type="text" id="teacher-id" placeholder="e.g., T-2023-0054">
             </div>
 
             <div class="form-group">
-                <label for="grade">Grade Level</label>
-                <select id="grade">
-                    <option value="" selected disabled> Grade level </option>
-                    <option value="4">4th Grade</option>
-                    <option value="5">5th Grade</option>
-                    <option value="6">6th Grade</option>
+                <label for="subject">Primary Subject</label>
+                <select id="subject">
+                    <option value="" selected disabled>Select primary subject</option>
+                    <option value="math">Mathematics</option>
+                    <option value="science">Science</option>
+                    <option value="english">English Language Arts</option>
+                    <option value="social">Social Studies</option>
+                    <option value="art">Art</option>
+                    <option value="music">Music</option>
+                    <option value="pe">Physical Education</option>
+                    <option value="other">Other</option>
                 </select>
+            </div>
+
+            <div class="form-group">
+                <label for="grades">Grade Levels Taught</label>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="grade4" name="grades" value="4">
+                    <label for="grade4">4th Grade</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="grade5" name="grades" value="5">
+                    <label for="grade5">5th Grade</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="grade6" name="grades" value="6">
+                    <label for="grade6">6th Grade</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id-upload">ID Verification</label>
+                <div class="file-upload">
+                    <div class="upload-icon">📷</div>
+                    <input type="file" id="id-upload" accept="image/*">
+                    <div class="upload-text">Upload a photo of your teacher ID or other identification</div>
+                    <div class="upload-hint">Click here or drag and drop an image (Driver's license, school ID, or teaching credential)</div>
+                </div>
             </div>
 
             <button class="submit-btn" onclick="validateForm()">Sign Up</button>
