@@ -268,5 +268,28 @@
         </div>
     </div>
 </body>
+<script>
+    function validateForm() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        const passwordError = document.querySelector('.password-error');
 
+        if (password !== confirmPassword) {
+            if (!passwordError) {
+                const errorElement = document.createElement('div');
+                errorElement.className = 'password-error';
+                errorElement.textContent = 'Passwords do not match.';
+                document.querySelector('.form-group:nth-child(4)').appendChild(errorElement);
+            } else {
+                passwordError.style.display = 'block';
+            }
+            return false;
+        } else if (passwordError) {
+            passwordError.style.display = 'none';
+        }
+
+        alert('Form submitted successfully!');
+        return true;
+    }
+</script>
 </html>
