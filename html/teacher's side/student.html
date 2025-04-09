@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List - Pinagbarilan Elementary School</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Bubblegum Sans', cursive;
+        }
+
+        body {
+            background-color: #f0f8ff;
+            color: #3c4043;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #4285f4;
+            padding: 12px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .logo img {
+            height: 60px;
+            width: 60px;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .teacher-info {
+            color: white;
+            text-align: right;
+        }
+
+        .teacher-name {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .teacher-role {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 3px solid #ffde03;
+            background-color: #ff9900;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .menu-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .menu-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+            min-width: 100px;
+        }
+
+        .menu-button:hover {
+            transform: translateY(-5px);
+        }
+
+        .menu-button.active {
+            background-color: #e6f4ea;
+            border: 3px solid #0f9d58;
+        }
+
+        .menu-icon {
+            color: #4285f4;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .menu-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #3c4043;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            color: #3b82f6;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        /* Student List Panel */
+        .panel {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            color: #3b82f6;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-title-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-icon {
+            color: #3b82f6;
+        }
+
+        /* Class filter controls */
+        .class-filter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-dropdown {
+            display: flex;
+            gap: 15px;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-item label {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .filter-item select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 2px solid #dadce0;
+            font-size: 16px;
+            font-family: 'Comic Sans MS', 'Bubblegum Sans', cursive;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border: 2px solid #dadce0;
+            border-radius: 20px;
+            padding: 6px 15px;
+            width: 300px;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            font-size: 16px;
+            width: 100%;
+            padding: 5px;
+            font-family: 'Comic Sans MS', 'Bubblegum Sans', cursive;
+        }
+
+        .search-icon {
+            color: #5f6368;
+            margin-right: 10px;
+        }
+
+        /* Student table */
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .student-table th {
+            background-color: #e8f0fe;
+            color: #3b82f6;
+            text-align: left;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .student-table tr {
+            border-bottom: 1px solid #dadce0;
+        }
+
+        .student-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .student-table tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .student-table td {
+            padding: 15px;
+            font-size: 15px;
+        }
+
+        .student-info-cell {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .student-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .student-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .student-id {
+            color: #5f6368;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            width: 100px;
+        }
+
+        .status-present {
+            background-color: #e6f4ea;
+            color: #0f9d58;
+        }
+
+        .status-absent {
+            background-color: #fce8e6;
+            color: #ea4335;
+        }
+
+        .status-late {
+            background-color: #fef7e0;
+            color: #f9ab00;
+        }
+
+        .gender-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5f6368;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-button {
+            padding: 6px 12px;
+            background-color: #e8f0fe;
+            color: #4285f4;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            font-family: 'Comic Sans MS', 'Bubblegum Sans', cursive;
+        }
+
+        .action-button:hover {
+            background-color: #d2e3fc;
+        }
+
+        .action-button.edit {
+            background-color: #e6f4ea;
+            color: #0f9d58;
+        }
+
+        .action-button.edit:hover {
+            background-color: #ceead6;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .page-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border: 2px solid #dadce0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .page-button:hover {
+            background-color: #e8f0fe;
+        }
+
+        .page-button.active {
+            background-color: #4285f4;
+            color: white;
+            border-color: #4285f4;
+        }
+
+        .page-arrow {
+            cursor: pointer;
+            color: #5f6368;
+        }
+
+        /* Add Student Button */
+        .add-student-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background-color: #4285f4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .add-student-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Color Classes */
+        .bg-red {
+            background-color: #ea4335;
+        }
+
+        .bg-blue {
+            background-color: #4285f4;
+        }
+
+        .bg-green {
+            background-color: #0f9d58;
+        }
+
+        .bg-yellow {
+            background-color: #f9ab00;
+        }
+
+        .bg-purple {
+            background-color: #a142f4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">
+                <img src="../../images/schoolLogo.jpg" alt="Logo">
+                <span>PINAGBARILAN ELEMENTARY SCHOOL</span>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="teacher-info">
+                <div class="teacher-name">Ms. Heart </div>
+                <div class="teacher-role">Grade 4 Teacher</div>
+            </div>
+            <div class="user-avatar">H</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="menu-buttons">
+            <div class="menu-button">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
+                    </svg>
+                </div>
+                <div class="menu-text">Dashboard</div>
+            </div>
+
+            <div class="menu-button">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"></path>
+                    </svg>
+                </div>
+                <div class="menu-text">Classes</div>
+            </div>
+
+            <div class="menu-button">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V10h16v11zm0-13H4V5h16v3z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="menu-text">Calendar</div>
+            </div>
+
+            <div class="menu-button">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="menu-text">Assignments</div>
+            </div>
+
+            <div class="menu-button active">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="menu-text">Students</div>
+            </div>
+
+            <div class="menu-button">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="menu-text">Grades</div>
+            </div>
+        </div>
+
+        <h1 class="page-title">Student List</h1>
+
+        <div class="panel">
+            <div class="panel-title">
+                <div class="panel-title-text">
+                    <div class="panel-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z">
+                            </path>
+                        </svg>
+                    </div>
+                    <span>Grade 4 - Section Masipag</span>
+                </div>
+            </div>
+
+            <div class="class-filter">
+                <div class="filter-dropdown">
+                    <div class="filter-item">
+                        <label for="subject-filter">Subject:</label>
+                        <select id="subject-filter">
+                            <option value="all">All Subjects</option>
+                            <option value="math">Math</option>
+                            <option value="science">Science</option>
+                            <option value="english">English</option>
+                            <option value="filipino">Filipino</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label for="status-filter">Attendance:</label>
+                        <select id="status-filter">
+                            <option value="all">All Status</option>
+                            <option value="present">Present</option>
+                            <option value="absent">Absent</option>
+                            <option value="late">Late</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="search-box">
+                    <div class="search-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+                            </path>
+                        </svg>
+                    </div>
+                    <input type="text" placeholder="Search students...">
+                </div>
+            </div>
+
+            <table class="student-table">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>ID Number</th>
+                        <th>Gender</th>
+                        <th>Today's Attendance</th>
+                        <th>Performance</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="student-info-cell">
+                                <div class="student-avatar bg-blue">A</div>
+                                <div class="student-details">
+                                    <div class="student-name">Ariel Santos</div>
+                                    <div class="student-id">Age: 10</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>2023-0001</td>
+                        <td>
+                            <div class="gender-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M9 9c0-1.7 1.3-3 3-3s3 1.3 3 3c0 1.7-1.3 3-3 3s-3-1.3-3-3zm3 5c2.7 0 8 1.3 8 4v2H4v-2c0-2.7 5.3-4 8-4z">
+                                    </path>
+                                </svg>
+                                M
+                            </div>
+                        </td>
+                        <td>
+                            <div class="status-badge status-present">Present</div>
+                        </td>
+                        <td>85%</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-button">View</button>
+                                <button class="action-button edit">Edit</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="student-info-cell">
+                                <div class="student-avatar bg-purple">B</div>
+                                <div class="student-details">
+                                    <div class="student-name">Bianca Reyes</div>
+                                    <div class="student-id">Age: 9</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>2023-0002</td>
+                        <td>
+                            <div class="gender-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12,4C13.93,4 15.5,5.57 15.5,7.5C15.5,9.43 13.93,11 12,11C10.07,11 8.5,9.43 8.5,7.5C8.5,5.57 10.07,4 12,4M12,13C14.67,13 20,14.33 20,17V20H4V17C4,14.33 9.33,13 12,13Z">
+                                    </path>
+                                </svg>
+                                F
+                            </div>
+                        </td>
+                        <td>
+                            <div class="status-badge status-present">Present</div>
+                        </td>
+                        <td>92%</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-button">View</button>
+                                <button class="action-button edit">Edit</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="student-info-cell">
+                                <div class="student-avatar bg-green">C</div>
+                                <div class="student-details">
+                                    <div class="student-name">Carlo Mendoza</div>
+                                    <div class="student-id">Age: 10</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>2023-0003</td>
+                        <td>
+                            <div class="gender-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M9 9c0-1.7 1.3-3 3-3s3 1.3 3 3c0 1.7-1.3 3-3 3s-3-1.3-3-3zm3 5c2.7 0 8 1.3 8 4v2H4v-2c0-2.7 5.3-4 8-4z">
+                                    </path>
+                                </svg>
+                                M
+                            </div>
+                        </td>
+                        <td>
+                            <div class="status-badge status-absent">Absent</div>
+                        </td>
+                        <td>78%</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-button">View</button>
+                                <button class="action-button edit">Edit</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="student-info-cell">
+                                <div class="student-avatar bg-red">D</div>
+                                <div class="student-details">
+                                    <div class="student-name">Diana Cruz</div>
+                                    <div class="student-id">Age: 9</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>2023-0004</td>
+                        <td>
+                            <div class="gender-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12,4C13.93,4 15.5,5.57 15.5,7.5C15.5,9.43 13.93,11 12,11C10.07,11 8.5,9.43 8.5,7.5C8.5,5.57 10.07,4 12,4M12,13C14.67,13 20,14.33 20,17V20H4V17C4,14.33 9.33,13 12,13Z">
+                                    </path>
+                                </svg>
+                                F
+                            </div>
+                        </td>
+                        <td>
+                            <div class="status-badge status-late">Late</div>
+                        </td>
+                        <td>88%</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-button">View</button>
+                                <button class="action-button edit">Edit</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="student-info-cell">
+                                <div class="student-avatar bg-yellow">E</div>
+                                <div class="student-details">
+                                    <div class="student-name">Eduardo Tan</div>
+                                    <div class="student-id">Age: 10</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>2023-0005</td>
+                        <td>
+                            <div class="gender-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M9 9c0-1.7 1.3-3 3-3s3 1.3 3 3c0 1.7-1.3 3-3 3s-3-1.3-3-3zm3 5c2.7 0 8 1.3 8 4v2H4v-2c0-2.7 5.3-4 8-4z">
+                                    </path>
+                                </svg>
+                                M
+                            </div>
+                        </td>
+                        <td>
+                            <div class="status-badge status-present">Present</div>
+                        </td>
+                        <td>95%</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-button">View</button>
+                                <button class="action-button edit">Edit</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="student-info-cell">
+                                <div class="student-avatar bg-blue">F</div>
+                                <div class="student-details">
+                                    <div class="student-name">Fiona Garcia</div>
+                                    <div class="student-id">Age: 9</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>2023-0006</td>
+                        <td>
+                            <div class="gender-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12,4C13.93,4 15.5,5.57 15.5,7.5C15.5,9.43 13.93,11 12,11C10.07,11 8.5,9.43 8.5,7.5C8.5,5.57 10.07,4 12,4M12,13C14.67,13 20,14.33 20,17V20H4V17C4,14.33 9.33,13 12,13Z">
+                                    </path>
+                                </svg>
+                                F
+                            </div>
+                        </td>
+                        <td>
+                            <div class="status-badge status-present">Present</div>
+                        </td>
+                        <td>90%</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-button">View</button>
+                                <button class="action-button edit">Edit</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <div class="page-arrow">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+                    </svg>
+                </div>
+                <div class="page-button active">1</div>
+                <div class="page-button">2</div>
+                <div class="page-button">3</div>
+                <div class="page-arrow">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Student Button -->
+        <div class="add-student-button" title="Add New Student">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-6H7v-2h4V7h2v6h4v2h-4v6z">
+                </path>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle the functionality of the page
+        document.querySelectorAll('.class-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.class-option').forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+            });
+        });
+
+        // Pagination functionality
+        const pageButtons = document.querySelectorAll('.page-button');
+        pageButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                pageButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                // Logic to load the corresponding page of students can be added here
+            });
+        });
+    </script>
+</body>
+
+</html>

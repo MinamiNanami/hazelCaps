@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classes - Pinagbarilan Elementary School</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Bubblegum Sans', cursive;
+        }
+
+        body {
+            background-color: #f0f8ff;
+            color: #3c4043;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #4285f4;
+            padding: 12px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .logo img {
+            height: 60px;
+            width: 60px;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .teacher-info {
+            color: white;
+            text-align: right;
+        }
+
+        .teacher-name {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .teacher-role {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 3px solid #ffde03;
+            background-color: #ff9900;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .menu-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .menu-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+            min-width: 100px;
+        }
+
+        .menu-button:hover {
+            transform: translateY(-5px);
+        }
+
+        .menu-button.active {
+            background-color: #e6f4ea;
+            border: 3px solid #0f9d58;
+        }
+
+        .menu-icon {
+            color: #4285f4;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .menu-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #3c4043;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            color: #3b82f6;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        /* Classes Page Specific Styles */
+        .classes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .class-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .class-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .class-header {
+            padding: 20px;
+            color: white;
+            position: relative;
+        }
+
+        .class-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .class-section {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .class-options {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        .class-body {
+            padding: 20px;
+        }
+
+        .class-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .class-info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #5f6368;
+        }
+
+        .class-info-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: #f1f3f4;
+            border-radius: 50%;
+            color: #4285f4;
+        }
+
+        .class-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .class-stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4285f4;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #5f6368;
+        }
+
+        .class-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .class-action-btn {
+            padding: 8px 15px;
+            background-color: #e8f0fe;
+            color: #4285f4;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .class-action-btn:hover {
+            background-color: #d2e3fc;
+        }
+
+        .class-action-btn.primary {
+            background-color: #4285f4;
+            color: white;
+        }
+
+        .class-action-btn.primary:hover {
+            background-color: #3b76e1;
+        }
+
+        /* Add Class Button */
+        .add-class-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8fafc;
+            border: 2px dashed #a0aec0;
+            border-radius: 15px;
+            padding: 40px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            height: 100%;
+        }
+
+        .add-class-btn:hover {
+            background-color: #e8f0fe;
+            border-color: #4285f4;
+        }
+
+        .add-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e8f0fe;
+            color: #4285f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .add-text {
+            font-weight: bold;
+            color: #4285f4;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 30px;
+            padding: 8px 15px;
+            flex-grow: 1;
+            max-width: 400px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-icon {
+            color: #5f6368;
+            margin-right: 10px;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 15px;
+            background-color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-btn.active {
+            background-color: #e8f0fe;
+            color: #4285f4;
+            font-weight: bold;
+        }
+
+        /* Help Button */
+        .help-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .help-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Create Button */
+        .create-button {
+            position: fixed;
+            bottom: 20px;
+            right: 90px;
+            width: 56px;
+            height: 56px;
+            background-color: #4285f4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .create-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Color Classes */
+        .color-blue {
+            background-color: #60a5fa;
+        }
+
+        .color-green {
+            background-color: #10b981;
+        }
+
+        .color-purple {
+            background-color: #8b5cf6;
+        }
+
+        .color-red {
+            background-color: #ef4444;
+        }
+
+        .color-orange {
+            background-color: #f59e0b;
+        }
+
+        .color-teal {
+            background-color: #14b8a6;
+        }
+
+        /* Today's Schedule Panel */
+        .schedule-panel {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .panel-title {
+            color: #3b82f6;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-title-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-icon {
+            color: #3b82f6;
+        }
+
+        .schedule-timeline {
+            display: flex;
+            padding: 20px 0;
+            overflow-x: auto;
+            gap: 15px;
+        }
+
+        .timeline-hour {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 120px;
+        }
+
+        .hour-label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #5f6368;
+        }
+
+        .hour-events {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+
+        .event {
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .event.empty {
+            background-color: #f1f3f4;
+            color: #5f6368;
+            border: 1px dashed #dadce0;
+        }
+
+        @media (max-width: 768px) {
+            .classes-container {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-bar {
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">
+                <img src="../../images/schoolLogo.jpg" alt="Logo">
+                <span>PINAGBARILAN ELEMENTARY SCHOOL</span>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="teacher-info">
+                <div class="teacher-name">Ms. Heart</div>
+                <div class="teacher-role">Grade 4 Teacher</div>
+            </div>
+            <div class="user-avatar">H</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="menu-buttons">
+            <div class="menu-button">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
+                    </svg>
+                </div>
+                <div class="menu-text">Dashboard</div>
+            </div>
+
+            <div class="menu-button active">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"></path>
+                    </svg>
+                </div>
+                <div class="menu-text">Classes</div>
+            </div>
+
+            <div class="menu-button">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V10h16v11zm0-13H4V5h16v3z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="menu-text">Calendar</div>
+            </div>
+
+            <div class="menu-button">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="menu-text">Assignments</div>
+            </div>
+
+            <div class="menu-button">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="menu-text">Students</div>
+            </div>
+
+            <div class="menu-button">
+                <div class="menu-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="menu-text">Grades</div>
+            </div>
+        </div>
+
+        <h1 class="page-title">My Classes</h1>
+
+        <div class="filter-section">
+            <div class="search-bar">
+                <div class="search-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#5f6368">
+                        <path
+                            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+                        </path>
+                    </svg>
+                </div>
+                <input type="text" class="search-input" placeholder="Search classes...">
+            </div>
+
+            <div class="filter-buttons">
+                <button class="filter-btn active">All Classes</button>
+                <button class="filter-btn">Active</button>
+                <button class="filter-btn">Archived</button>
+            </div>
+        </div>
+
+        <div class="classes-container">
+            <!-- Math Class Card -->
+            <div class="class-card">
+                <div class="class-header color-blue">
+                    <div class="class-name">Mathematics</div>
+                    <div class="class-section">Grade 4 - Section A</div>
+                    <div class="class-options">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                            <path
+                                d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="class-body">
+                    <div class="class-info-grid">
+                        <div class="class-info-item">
+                            <div class="class-info-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#4285f4">
+                                    <path
+                                        d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span>MWF • 8:00 - 9:30 AM</span>
+                        </div>
+                        <div class="class-info-item">
+                            <div class="class-info-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#4285f4">
+                                    <path
+                                        d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span>Room 204</span>
+                        </div>
+                    </div>
+
+                    <div class="class-stats">
+                        <div class="class-stat">
+                            <div class="stat-value">24</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                        <div class="class-stat">
+                            <div class="stat-value">85%</div>
+                            <div class="stat-label">Average</div>
+                        </div>
+                        <div class="class-stat">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Assignments</div>
+                        </div>
+                    </div>
+
+                    <div class="class-actions">
+                        <button class="class-action-btn">Materials</button>
+                        <button class="class-action-btn primary">Enter Class</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Science Class Card -->
+            <div class="class-card">
+                <div class="class-header color-purple">
+                    <div class="class-name">Science</div>
+                    <div class="class-section">Grade 4 - Section A</div>
+                    <div class="class-options">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                            <path
+                                d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="class-body">
+                    <div class="class-info-grid">
+                        <div class="class-info-item">
+                            <div class="class-info-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#4285f4">
+                                    <path
+                                        d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span>TTh • 9:00 - 10:30 AM</span>
+                        </div>
+                        <div class="class-info-item">
+                            <div class="class-info-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#4285f4">
+                                    <path
+                                        d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span>Room 204</span>
+                        </div>
+                    </div>
+
+                    <div class="class-stats">
+                        <div class="class-stat">
+                            <div class="stat-value">24</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                        <div class="class-stat">
+                            <div class="stat-value">78%</div>
+                            <div class="stat-label">Average</div>
+                        </div>
+                        <div class="class-stat">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Assignments</div>
+                        </div>
+                    </div>
+
+                    <div class="class-actions">
+                        <button class="class-action-btn">Materials</button>
+                        <button class="class-action-btn primary">Enter Class</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filipino Class Card -->
+            <div class="class-card">
+                <div class="class-header color-green">
+                    <div class="class-name">Filipino</div>
+                    <div class="class-section">Grade 4 - Section A</div>
+                    <div class="class-options">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                            <path
+                                d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="class-body">
+                    <div class="class-info-grid">
+                        <div class="class-info-item">
+                            <div class="class-info-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#4285f4">
+                                    <path
+                                        d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span>MWF • 1:00 - 2:30 PM</span>
+                        </div>
+                        <div class="class-info-item">
+                            <div class="class-info-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#4285f4">
+                                    <path
+                                        d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <span>Room 205</span>
+                        </div>
+                    </div>
+
+                    <div class="class-stats">
+                        <div class="class-stat">
+                            <div class="stat-value">24</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                        <div class="class-stat">
+                            <div class="stat-value">90%</div>
+                            <div class="stat-label">Average</div>
+                        </div>
+                        <div class="class-stat">
+                            <div class="stat-value">10</div>
+                            <div class="stat-label">Assignments</div>
+                        </div>
+                    </div>
+
+                    <div class="class-actions">
+                        <button class="class-action-btn">Materials</button>
+                        <button class="class-action-btn primary">Enter Class</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Class Button -->
+        <div class="add-class-btn">
+            <div class="add-icon">
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="#4285f4">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-6H7v-2h4V7h2v4h4v2h-4v6z">
+                    </path>
+                </svg>
+            </div>
+            <div class="add-text">Add New Class</div>
+        </div>
+
+        <!-- Today's Schedule Panel -->
+        <div class="schedule-panel">
+            <div class="panel-title">
+                <span>Today's Schedule</span>
+            </div>
+            <div class="schedule-timeline">
+                <div class="timeline-hour">
+                    <div class="hour-label">8:00 AM</div>
+                    <div class="hour-events">
+                        <div class="event color-blue">Mathematics</div>
+                    </div>
+                </div>
+                <div class="timeline-hour">
+                    <div class="hour-label">9:30 AM</div>
+                    <div class="hour-events">
+                        <div class="event empty">No Class</div>
+                    </div>
+                </div>
+                <div class="timeline-hour">
+                    <div class="hour-label">10:30 AM</div>
+                    <div class="hour-events">
+                        <div class="event color-purple">Science</div>
+                    </div>
+                </div>
+                <div class="timeline-hour">
+                    <div class="hour-label">12:00 PM</div>
+                    <div class="hour-events">
+                        <div class="event empty">No Class</div>
+                    </div>
+                </div>
+                <div class="timeline-hour">
+                    <div class="hour-label">1:00 PM</div>
+                    <div class="hour-events">
+                        <div class="event color-green">Filipino</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Button -->
+    <div class="help-button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z">
+            </path>
+        </svg>
+    </div>
+
+    <!-- Create Button -->
+    <div class="create-button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z">
+            </path>
+        </svg>
+    </div>
+</body>
+
+</html>
